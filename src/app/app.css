@@ -1,0 +1,45 @@
+.app-header {
+  width: 100%;
+  background: #1976d2;
+  color: #fff;
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  margin-bottom: 2rem;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.logout-btn {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+.logout-btn mat-icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.main-content {
+  display: flex;
+  height: calc(100vh - 120px);
+}

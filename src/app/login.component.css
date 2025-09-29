@@ -1,0 +1,15 @@
+mat-card {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.error {
+  color: #d00;
+  margin-top: 1rem;
+  text-align: center;
+}

@@ -1,0 +1,334 @@
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 2.5rem;
+  margin: 2rem 0;
+  max-height: calc(3 * 420px + 2 * 2.5rem); /* 3 rows, card height + gaps */
+  overflow: visible;
+}
+
+@media (max-width: 1200px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-height: calc(3 * 420px + 2 * 2.5rem);
+  }
+}
+@media (max-width: 800px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    max-height: none;
+  }
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 0 1rem;
+}
+.dashboard-header button[mat-raised-button] {
+  font-weight: 600;
+  font-size: 1.08rem;
+  letter-spacing: 0.5px;
+  padding: 0.6rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.10);
+}
+
+.chatbot-card {
+  min-width: 280px;
+  max-width: 400px;
+  margin: 0 auto;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(25, 118, 210, 0.13), 0 1.5px 6px rgba(44, 62, 80, 0.08);
+  border: 1.5px solid #1a237e;
+  background: linear-gradient(135deg, #f5f6fa 80%, #e3f2fd 100%);
+  transition: box-shadow 0.2s, border-color 0.2s;
+  overflow: hidden;
+}
+.chatbot-card:hover {
+  box-shadow: 0 8px 32px rgba(25, 118, 210, 0.22), 0 2px 8px rgba(44, 62, 80, 0.13);
+  border-color: #1976d2;
+}
+mat-card-header {
+  align-items: center;
+  background: linear-gradient(90deg, #1976d2 60%, #42a5f5 100%);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  padding-bottom: 0.5rem;
+  position: relative;
+  color: #fff;
+  min-height: 64px;
+}
+.chatbot-avatar {
+  background: #fff;
+  color: #1976d2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  font-size: 2rem;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.10);
+  margin-right: 0.75rem;
+}
+.card-actions {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+  display: flex;
+  gap: 0.25rem;
+}
+.card-actions button[mat-icon-button] {
+  color: #fff;
+  background: rgba(25, 118, 210, 0.18);
+  margin-left: 0.25rem;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+.card-actions button[mat-icon-button]:hover {
+  background: #fff;
+  color: #1976d2;
+}
+.card-actions button[mat-icon-button]:nth-child(1) {
+  color: #fff;
+  background: rgba(25, 118, 210, 0.18);
+}
+.card-actions button[mat-icon-button]:nth-child(1):hover {
+  background: #1976d2;
+  color: #fff;
+}
+mat-card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+}
+mat-card-subtitle {
+  font-size: 1.02rem;
+  color: #e3f2fd;
+  font-weight: 500;
+}
+mat-card-content {
+  background: #fff;
+  padding: 1.25rem 1.5rem 1.5rem 1.5rem;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+.desc {
+  margin-top: 0.5rem;
+  font-size: 1.08rem;
+  color: #232f3e;
+  line-height: 1.5;
+}
+.loading {
+  text-align: center;
+  margin: 2rem 0;
+  color: #1976d2;
+  font-size: 1.2rem;
+}
+.error {
+  text-align: center;
+  margin: 2rem 0;
+  color: #d32f2f;
+  font-size: 1.1rem;
+}
+mat-paginator {
+  margin: 2rem auto 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+/* Dialog styles */
+.details-dialog {
+  padding: 0.5rem;
+  background: #f5f6fa;
+  border-radius: 16px;
+  min-width: 320px;
+  max-width: 90vw;       /* responsive width */
+  max-height: 90vh;
+  overflow: auto;        /* allow both scroll directions */
+  box-sizing: border-box;
+}
+
+.details-dialog h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1976d2;
+  margin-bottom: 1rem;
+}
+.details-dialog .avatar {
+  background: #1976d2;
+  color: #fff;
+  border-radius: 50%;
+  padding: 0.4rem;
+  font-size: 2rem;
+  margin-right: 0.5rem;
+}
+.details-dialog mat-dialog-content {
+  padding: 0.5rem;
+  background: #fff;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  overflow-y: auto;
+  overflow-x: auto;      /* ✅ allow horizontal scroll if needed */
+  max-height: calc(90vh - 200px);
+  white-space: pre-wrap; /* keeps prompt formatting */
+}
+.details-dialog .form-group {
+  margin-bottom: 1.2rem;
+}
+.details-dialog .form-control {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 0.25rem;
+  background: #f8fafc;
+  box-sizing: border-box;
+}
+.details-dialog mat-dialog-actions {
+  padding: 0.5rem 0 0.5rem 0;
+  background: transparent;
+  border-radius: 0 0 10px 10px;
+}
+.details-dialog button[mat-button],
+.details-dialog button[mat-raised-button] {
+  min-width: 90px;
+  margin-left: 0.5rem;
+}
+.details-dialog .loading {
+  color: #1976d2;
+  text-align: center;
+  margin: 1.5rem 0;
+}
+.details-dialog .error {
+  color: #d32f2f;
+  text-align: center;
+  margin: 1.5rem 0;
+}
+.details-dialog .success {
+  color: #388e3c;
+  text-align: center;
+  margin: 1.5rem 0;
+  font-weight: 600;
+}
+
+.train-btn {
+  margin-left: 1rem;
+  color: #fff;
+  background: #ff9800;
+  border-radius: 50%;
+  transition: background 0.2s;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  min-width: 50px;
+  height: 50px;
+  line-height: 1;
+}
+.train-btn:hover {
+  background: #f57c00;
+  color: #fff;
+}
+
+.delete-dialog {
+  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+  background: #fff3e0;
+  border-radius: 16px;
+  min-width: 340px;
+  max-width: 420px;
+}
+.delete-dialog h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #d32f2f;
+  margin-bottom: 1rem;
+}
+.delete-dialog mat-icon {
+  background: #fff;
+  border-radius: 50%;
+  padding: 0.3rem;
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+}
+.delete-dialog mat-dialog-content {
+  padding: 0.5rem 0 0.5rem 0;
+  background: #fff3e0;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  color: #d32f2f;
+  font-weight: 500;
+}
+.delete-dialog mat-dialog-actions {
+  padding: 0.5rem 0 0.5rem 0;
+  background: transparent;
+  border-radius: 0 0 10px 10px;
+}
+.delete-dialog button[mat-button],
+.delete-dialog button[mat-raised-button] {
+  min-width: 90px;
+  margin-left: 0.5rem;
+}
+.delete-dialog .error {
+  color: #d32f2f;
+  text-align: center;
+  margin: 1rem 0 0 0;
+}
+
+/* Try chatbot dialog specific styles */
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+mat-select.form-control {
+  width: calc(100% - 2rem);
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 0.25rem;
+  background: #f8fafc;
+  padding-right: 2rem;
+}
+
+mat-slide-toggle {
+  margin-left: 0.5rem;
+}
+
+.no-permission {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  padding: 2rem;
+}
+
+.no-permission mat-card {
+  text-align: center;
+  max-width: 400px;
+  padding: 2rem;
+}
+
+.no-permission h2 {
+  color: #f44336;
+  margin-bottom: 1rem;
+}
+
+.no-permission p {
+  color: #666;
+  font-size: 1.1rem;
+}

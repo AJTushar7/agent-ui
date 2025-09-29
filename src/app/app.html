@@ -1,0 +1,21 @@
+<header class="app-header">
+  <div class="header-content">
+    <h1>Ichat Agent</h1>
+    <button 
+      *ngIf="!isLoginPage" 
+      mat-icon-button 
+      (click)="logout()" 
+      class="logout-btn"
+      matTooltip="Logout">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+</header>
+
+<div *ngIf="!isLoginPage" class="main-content">
+  <app-left-menu>
+    <router-outlet />
+  </app-left-menu>
+</div>
+
+<router-outlet *ngIf="isLoginPage" />

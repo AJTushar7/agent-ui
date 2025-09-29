@@ -1,0 +1,166 @@
+.api-keys-container {
+  padding: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Card styling */
+.key-card, .report-card {
+  border-radius: 18px;
+  padding: 28px;
+  background: linear-gradient(145deg, #ffffff, #f9fafb);
+  box-shadow: 0 4px 20px #0002;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.key-card:hover, .report-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px #0003;
+}
+
+/* Header */
+.key-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.key-card-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #232f3e;
+}
+
+/* Buttons */
+button[mat-raised-button] {
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px #3a47aa29;
+  text-transform: none;
+}
+
+/* Table */
+table.mat-table {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.mat-header-cell {
+  background: #232f3e;
+  color: #fff;
+  font-weight: 600;
+  padding: 14px;
+  letter-spacing: 0.3px;
+  font-size: 0.9rem;
+}
+
+.mat-cell {
+  padding: 14px;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #f0f0f0;
+  color: #374151;
+}
+
+tr.mat-row:nth-child(even) {
+  background: #f8fafc;
+}
+
+tr.mat-row:hover {
+  background: #eef3ff;
+  transition: background 0.2s ease;
+}
+
+/* Key styling */
+.key-masked {
+  font-family: 'Fira Mono', monospace;
+  font-size: 0.92rem;
+  background: #f3f4f6;
+  padding: 4px 8px;
+  border-radius: 6px;
+  color: #374151;
+  letter-spacing: 0.5px;
+}
+
+/* Quota badges */
+.quota-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-align: center;
+  min-width: 60px;
+}
+
+.quota-green {
+  background: #e6f8f0;
+  color: #0d6832;
+}
+
+.quota-orange {
+  background: #fff3e6;
+  color: #a64d00;
+}
+
+.quota-red {
+  background: #fdecea;
+  color: #b91c1c;
+}
+
+/* Actions */
+.mat-icon-button {
+  border-radius: 8px;
+  margin-right: 6px;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.mat-icon-button:hover {
+  background: #eef2ff;
+  transform: scale(1.08);
+}
+
+/* Dialog - terminal style */
+pre {
+  background: #1e1e2f;
+  color: #00ffae;
+  padding: 18px;
+  border-radius: 8px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 420px;
+  overflow-y: auto;
+  border: 1px solid #333;
+}
+
+/* Dialog buttons */
+.mat-dialog-actions button {
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .api-keys-container {
+    padding: 16px;
+    gap: 20px;
+  }
+  .key-card, .report-card {
+    padding: 16px;
+  }
+  .key-card-header h2 {
+    font-size: 1.2rem;
+  }
+  .mat-header-cell, .mat-cell {
+    padding: 8px;
+    font-size: 0.85rem;
+  }
+}
