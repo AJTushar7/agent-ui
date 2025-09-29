@@ -6,11 +6,26 @@
     </div>
     <button 
       mat-icon-button 
-      (click)="logout()" 
-      class="logout-btn"
-      matTooltip="Logout">
-      <mat-icon>logout</mat-icon>
+      [matMenuTriggerFor]="userMenu"
+      class="user-menu-btn"
+      matTooltip="User Menu">
+      <mat-icon>account_circle</mat-icon>
     </button>
+    
+    <mat-menu #userMenu="matMenu" class="user-menu">
+      <div class="user-info">
+        <mat-icon class="user-avatar">account_circle</mat-icon>
+        <div class="user-details">
+          <div class="user-name">Admin User</div>
+          <div class="user-email">admin@chatagent.pro</div>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
   </div>
 </header>
 

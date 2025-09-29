@@ -43,7 +43,8 @@
   background-clip: text;
 }
 
-.logout-btn {
+/* User Menu Styles */
+.user-menu-btn {
   color: var(--text-secondary) !important;
   transition: all 0.2s ease;
   background: var(--background-alt);
@@ -52,12 +53,45 @@
   border: 1px solid var(--border);
 }
 
-.logout-btn:hover {
+.user-menu-btn:hover {
   color: var(--primary-color) !important;
   background: var(--background);
   border-color: var(--primary-color);
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
+}
+
+.user-menu {
+  margin-top: 0.5rem;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1rem 0.75rem 1rem;
+  gap: 0.75rem;
+  min-width: 200px;
+}
+
+.user-avatar {
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+
+.user-details {
+  flex: 1;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.user-email {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
 }
 
 .main-content {

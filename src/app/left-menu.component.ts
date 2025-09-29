@@ -22,32 +22,33 @@ import { filter } from 'rxjs/operators';
   template: `
     <mat-sidenav-container class="sidenav-container">
       <mat-sidenav #drawer mode="side" [(opened)]="opened" class="sidenav">
-        <div class="sidenav-header">
-          <div class="brand-section">
-            <img src="/logo.png" alt="ChatAgent Pro" class="sidenav-logo">
-            <div class="brand-text">
-              <h3 class="brand-title">ChatAgent Pro</h3>
-              <p class="brand-subtitle">AI Agent Platform</p>
-            </div>
-          </div>
+        <div class="sidenav-header" [class.collapsed]="!opened">
+          <img 
+            src="/logo.png" 
+            alt="Dashboard" 
+            class="nav-logo"
+            (click)="navigateToDashboard()"
+            title="Go to Dashboard">
         </div>
         <mat-nav-list>
           <a mat-list-item 
              routerLink="/dashboard" 
              routerLinkActive="active"
-             *ngIf="hasLeftMenuDashboardPermission">
-            <mat-icon matListItemIcon>dashboard</mat-icon>
-            <span matListItemTitle>Dashboard</span>
+             *ngIf="hasLeftMenuDashboardPermission"
+             [title]="!opened ? 'Dashboard' : ''">
+            <mat-icon matListItemIcon>space_dashboard</mat-icon>
+            <span matListItemTitle *ngIf="opened">Dashboard</span>
           </a>
 
           <div *ngIf="hasLeftMenuConfigPermission">
             <a mat-list-item
                (click)="toggleConfigMenu()"
                [class.active]="isConfigurationRouteActive()"
-               class="menu-item-with-submenu">
-              <mat-icon matListItemIcon>settings</mat-icon>
-              <span matListItemTitle>Configuration</span>
-              <mat-icon class="menu-toggle-icon">{{ configMenuOpen ? 'expand_less' : 'expand_more' }}</mat-icon>
+               class="menu-item-with-submenu"
+               [title]="!opened ? 'Configuration' : ''">
+              <mat-icon matListItemIcon>tune</mat-icon>
+              <span matListItemTitle *ngIf="opened">Configuration</span>
+              <mat-icon class="menu-toggle-icon" *ngIf="opened">{{ configMenuOpen ? 'expand_less' : 'expand_more' }}</mat-icon>
             </a>
             <div *ngIf="configMenuOpen" class="submenu-list">
               <a mat-list-item 
@@ -69,9 +70,10 @@ import { filter } from 'rxjs/operators';
           <a mat-list-item 
              routerLink="/admin" 
              routerLinkActive="active"
-             *ngIf="hasLeftMenuAdminPermission">
-            <mat-icon matListItemIcon>admin_panel_settings</mat-icon>
-            <span matListItemTitle>Admin</span>
+             *ngIf="hasLeftMenuAdminPermission"
+             [title]="!opened ? 'Admin' : ''">
+            <mat-icon matListItemIcon>shield_person</mat-icon>
+            <span matListItemTitle *ngIf="opened">Admin</span>
           </a>
         </mat-nav-list>
       </mat-sidenav>
@@ -134,5 +136,9 @@ export class LeftMenuComponent implements OnInit {
 
   isConfigurationRouteActive(): boolean {
     return this.router.url.includes('/configuration') || this.router.url.includes('/integration-keys');
+  }
+
+  navigateToDashboard() {
+    this.router.navigate(['/dashboard']);
   }
 }

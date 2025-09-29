@@ -8,11 +8,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, LeftMenuComponent, MatIconModule, MatButtonModule, MatTooltipModule, MatDialogModule],
+  imports: [CommonModule, RouterOutlet, LeftMenuComponent, MatIconModule, MatButtonModule, MatTooltipModule, MatDialogModule, MatMenuModule, MatDividerModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

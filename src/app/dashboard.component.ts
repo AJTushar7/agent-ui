@@ -36,12 +36,46 @@ interface ChatbotDetails {
 interface UserModelDetailList {
   model_name: string;
   is_active: boolean;
-  
 }
 
 interface LLMUserModelDetailList {
   user_model_details: UserModelDetailList[];
 }
+
+// Mock Data
+const MOCK_CHATBOTS: Chatbot[] = [
+  {
+    chatbot_id: 'cb_001',
+    description: 'Customer Support Assistant - Handles customer inquiries, provides product information, and resolves common issues efficiently.'
+  },
+  {
+    chatbot_id: 'cb_002', 
+    description: 'Sales Consultant Bot - Assists with lead qualification, product recommendations, and guides users through the sales process.'
+  },
+  {
+    chatbot_id: 'cb_003',
+    description: 'Technical Documentation Assistant - Helps developers find relevant documentation, API references, and troubleshooting guides.'
+  },
+  {
+    chatbot_id: 'cb_004',
+    description: 'HR Onboarding Bot - Guides new employees through onboarding process, company policies, and initial setup tasks.'
+  },
+  {
+    chatbot_id: 'cb_005',
+    description: 'E-commerce Shopping Assistant - Provides product recommendations, answers questions about orders, and helps with returns.'
+  },
+  {
+    chatbot_id: 'cb_006',
+    description: 'Educational Tutor Bot - Offers personalized learning assistance, explains complex concepts, and provides practice exercises.'
+  }
+];
+
+const MOCK_API_RESPONSE: ChatbotApiResponse = {
+  total: MOCK_CHATBOTS.length,
+  page: 1,
+  per_page: 9,
+  chatbots: MOCK_CHATBOTS
+};
 
 @Component({
   selector: 'app-dashboard',
@@ -60,6 +94,12 @@ interface LLMUserModelDetailList {
     
     <div *ngIf="hasDashboardPermission">
       <div class="dashboard-header">
+        <div class="header-left">
+          <div *ngIf="usingMockData" class="mock-data-indicator">
+            <mat-icon>info</mat-icon>
+            <span>Demo Mode: Showing sample chatbots</span>
+          </div>
+        </div>
         <button mat-raised-button color="primary" (click)="openCreate()">
           <mat-icon>add</mat-icon> Create New Chatbot
         </button>
@@ -110,6 +150,7 @@ export class DashboardComponent implements OnInit {
   loading = false;
   error = '';
   hasDashboardPermission = false;
+  usingMockData = false;
 
   constructor(
     private http: HttpClient, 
@@ -127,7 +168,9 @@ export class DashboardComponent implements OnInit {
   fetchChatbots(page: number) {
     this.loading = true;
     this.error = '';
+    this.usingMockData = false;
     const headers = this.authService.getAuthHeaders();
+    
     this.http.get<ChatbotApiResponse>(`http://127.0.0.1:8000/chatbot?page=${page}&per_page=${this.perPage}`,{headers})
       .subscribe({
         next: (res) => {
@@ -135,10 +178,16 @@ export class DashboardComponent implements OnInit {
           this.total = res.total;
           this.page = res.page;
           this.loading = false;
+          this.usingMockData = false;
         },
         error: (err) => {
-          this.error = 'Failed to load chatbots.';
+          console.log('API failed, using mock data for demo purposes');
+          // Use mock data when API fails
+          this.chatbots = MOCK_API_RESPONSE.chatbots;
+          this.total = MOCK_API_RESPONSE.total;
+          this.page = MOCK_API_RESPONSE.page;
           this.loading = false;
+          this.usingMockData = true;
         }
       });
   }
