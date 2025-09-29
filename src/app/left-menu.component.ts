@@ -22,14 +22,6 @@ import { filter } from 'rxjs/operators';
   template: `
     <mat-sidenav-container class="sidenav-container">
       <mat-sidenav #drawer mode="side" [(opened)]="opened" class="sidenav">
-        <div class="sidenav-header" [class.collapsed]="!opened">
-          <img 
-            src="/logo.png" 
-            alt="Dashboard" 
-            class="nav-logo"
-            (click)="navigateToDashboard()"
-            title="Go to Dashboard">
-        </div>
         <mat-nav-list>
           <a mat-list-item 
              routerLink="/dashboard" 
@@ -140,5 +132,9 @@ export class LeftMenuComponent implements OnInit {
 
   navigateToDashboard() {
     this.router.navigate(['/dashboard']);
+  }
+
+  toggleSidebar() {
+    this.opened = !this.opened;
   }
 }

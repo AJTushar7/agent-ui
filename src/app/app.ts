@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, ViewChild } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { LeftMenuComponent } from './left-menu.component';
 import { CommonModule } from '@angular/common';
@@ -21,11 +21,18 @@ import { MatDividerModule } from '@angular/material/divider';
 export class App {
   protected readonly title = signal('agent-ui');
   isLoginPage = false;
+  @ViewChild(LeftMenuComponent) leftMenu!: LeftMenuComponent;
 
   constructor(private router: Router, private authService: AuthService) {
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe((event: any) => {
       this.isLoginPage = event.urlAfterRedirects === '/login';
     });
+  }
+
+  toggleSidebar() {
+    if (this.leftMenu) {
+      this.leftMenu.toggleSidebar();
+    }
   }
 
   logout() {

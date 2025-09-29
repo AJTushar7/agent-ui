@@ -104,9 +104,32 @@ const MOCK_API_RESPONSE: ChatbotApiResponse = {
           <mat-icon>add</mat-icon> Create New Chatbot
         </button>
       </div>
-      <div *ngIf="loading" class="loading">Loading chatbots...</div>
+      <div *ngIf="loading" class="loading">
+        <mat-icon>hourglass_empty</mat-icon>
+        <span>Loading chatbots...</span>
+      </div>
+      
       <div *ngIf="error" class="error">{{ error }}</div>
-      <div class="dashboard-grid">
+      
+      <!-- Empty State -->
+      <div *ngIf="!loading && !error && chatbots.length === 0" class="empty-state">
+        <mat-card class="empty-state-card">
+          <mat-card-content>
+            <div class="empty-state-content">
+              <mat-icon class="empty-state-icon">smart_toy</mat-icon>
+              <h2>No Chatbots Found</h2>
+              <p>Get started by creating your first AI chatbot. Build intelligent conversational agents tailored to your specific needs.</p>
+              <button mat-raised-button color="primary" (click)="openCreate()" class="empty-state-button">
+                <mat-icon>add</mat-icon>
+                Create Your First Chatbot
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      
+      <!-- Cards Grid -->
+      <div *ngIf="chatbots.length > 0" class="dashboard-grid">
         <mat-card *ngFor="let bot of chatbots" class="chatbot-card">
           <mat-card-header>
             <div mat-card-avatar class="chatbot-avatar">
@@ -131,7 +154,10 @@ const MOCK_API_RESPONSE: ChatbotApiResponse = {
           </mat-card-content>
         </mat-card>
       </div>
+      
+      <!-- Pagination - only show when there are chatbots -->
       <mat-paginator
+        *ngIf="chatbots.length > 0 && total > perPage"
         [length]="total"
         [pageSize]="perPage"
         [pageIndex]="page - 1"
