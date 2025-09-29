@@ -1,0 +1,61 @@
+# Agent UI - Angular Application
+
+## Overview
+This is an Angular 20+ application called "Ichat Agent" that provides a user interface for agent management with authentication, dashboard, and admin functionality.
+
+## Project Structure
+- **Frontend**: Angular 20.1.0 application
+- **UI Framework**: Angular Material Design
+- **Authentication**: JWT token-based authentication with role-based permissions
+- **Backend API**: Connects to a backend API at localhost:8000 (configurable via environment)
+
+## Recent Changes (2025-09-29)
+- Configured Angular for Replit environment with proper host settings
+- Set up development server on port 5000 with allowedHosts: "all" for proxy compatibility
+- Added environment configuration for API URL management
+- Configured production deployment with build process
+- Set up workflow for development server
+
+## User Preferences
+- Uses Angular Material for consistent UI components
+- Follows Angular standalone component architecture
+- Implements proper TypeScript typing throughout the application
+
+## Project Architecture
+### Components
+- **App Component**: Main application shell with navigation
+- **Login Component**: User authentication
+- **Dashboard Component**: Main dashboard interface
+- **Admin Component**: Administrative functions
+- **API Keys Component**: API key management
+- **Train Model Component**: Model training interface
+- **Left Menu Component**: Navigation menu
+
+### Services
+- **Auth Service**: Handles authentication, JWT tokens, user permissions, and API communication
+- Uses environment-based configuration for API endpoints
+
+### Key Features
+- Role-based access control with screen permissions
+- JWT token management with localStorage
+- Protected routes with auth guards
+- Material Design UI components
+- Responsive design
+
+## Configuration
+- **Development**: Angular dev server on port 5000, allows all hosts
+- **Production**: Built with Angular CLI, served with serve package
+- **API**: Configurable backend URL through environment files
+- **Deployment**: Configured for Replit autoscale deployment
+
+## Dependencies
+- Angular 20.1.0 with Material Design
+- RxJS for reactive programming
+- TypeScript 5.8.2
+- Serve package for production deployment
+
+## Security
+- JWT token-based authentication
+- Role and permission-based access control
+- Secure HTTP headers and token management
+- Environment-based configuration to avoid hardcoded URLs
