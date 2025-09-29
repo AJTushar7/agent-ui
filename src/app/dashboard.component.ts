@@ -119,7 +119,7 @@ const MOCK_API_RESPONSE: ChatbotApiResponse = {
         </button>
       </div>
       <div *ngIf="loading" class="loading">
-        <mat-icon>hourglass_empty</mat-icon>
+        <mat-icon>sync</mat-icon>
         <span>Loading chatbots...</span>
       </div>
       
@@ -395,14 +395,21 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   imports: [MatDialogModule, MatIconModule, MatButtonModule, CommonModule, FormsModule, HttpClientModule],
   template: `
     <div class="details-dialog">
-      <h2 mat-dialog-title>
-        <mat-icon class="avatar">smart_toy</mat-icon>
-        Chatbot Details
-        <button mat-mini-fab color="accent" class="train-btn" matTooltip="Train Model (RAG)" (click)="goToTrain()">
-          TRAIN
-        </button>
-      </h2>
-      <mat-dialog-content>
+      <div class="dialog-header">
+        <div class="header-content">
+          <mat-icon>smart_toy</mat-icon>
+          <h2 mat-dialog-title>Chatbot Details</h2>
+        </div>
+        <div class="header-actions">
+          <button mat-mini-fab color="accent" class="train-btn" matTooltip="Train Model (RAG)" (click)="goToTrain()">
+            TRAIN
+          </button>
+          <button mat-icon-button mat-dialog-close class="close-button">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="dialog-content">
         <div *ngIf="loading" class="loading">Loading details...</div>
         <div *ngIf="error" class="error">{{ error }}</div>
         <form *ngIf="!loading && !error" #editForm="ngForm">
@@ -425,7 +432,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         </form>
         <div *ngIf="saveError" class="error">{{ saveError }}</div>
         <div *ngIf="saveSuccess" class="success">Saved successfully!</div>
-      </mat-dialog-content>
+      </div>
       <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close [disabled]="saving">Close</button>
         <button mat-raised-button color="primary" (click)="save()" [disabled]="loading || error || saving">{{ saving ? 'Saving...' : 'Save' }}</button>
@@ -509,14 +516,19 @@ export class ChatbotDetailsDialog implements OnInit {
   imports: [MatDialogModule, MatIconModule, MatButtonModule, CommonModule, HttpClientModule],
   template: `
     <div class="delete-dialog">
-      <h2 mat-dialog-title>
-        <mat-icon color="warn">delete</mat-icon>
-        Confirm Delete
-      </h2>
-      <mat-dialog-content>
-        <div>Are you sure you want to delete chatbot <strong>{{ data.chatbot_id }}</strong>?</div>
+      <div class="dialog-header">
+        <div class="header-content">
+          <mat-icon>delete</mat-icon>
+          <h2 mat-dialog-title>Confirm Delete</h2>
+        </div>
+        <button mat-icon-button mat-dialog-close class="close-button">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <div class="dialog-content">
+        <p>Are you sure you want to delete chatbot <strong>{{ data.chatbot_id }}</strong>?</p>
         <div *ngIf="error" class="error">{{ error }}</div>
-      </mat-dialog-content>
+      </div>
       <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close [disabled]="loading">Cancel</button>
         <button mat-raised-button color="warn" (click)="deleteChatbot()" [disabled]="loading">{{ loading ? 'Deleting...' : 'Delete' }}</button>
@@ -559,10 +571,10 @@ export class ChatbotDeleteDialog {
   template: `
     <div class="details-dialog">
       <div class="dialog-header">
-        <h2 mat-dialog-title>
-          <mat-icon class="avatar">add</mat-icon>
-          Create New Chatbot
-        </h2>
+        <div class="header-content">
+          <mat-icon>add</mat-icon>
+          <h2 mat-dialog-title>Create New Chatbot</h2>
+        </div>
         <button mat-icon-button mat-dialog-close class="close-button">
           <mat-icon>close</mat-icon>
         </button>

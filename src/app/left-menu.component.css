@@ -118,6 +118,7 @@ mat-nav-list {
   display: flex;
   align-items: center;
   width: calc(100% - 2rem);
+  box-sizing: border-box;
 }
 
 .mat-mdc-list-item .mat-mdc-list-item-icon {
@@ -146,6 +147,7 @@ mat-nav-list {
   border-color: var(--primary-color);
   box-shadow: 0 4px 16px rgba(25, 118, 210, 0.25);
   transform: translateX(6px);
+  width: calc(100% - 2rem - 6px);
 }
 
 .mat-mdc-list-item.active .mat-mdc-list-item-icon {
@@ -167,6 +169,7 @@ mat-nav-list {
   text-overflow: ellipsis;
   white-space: nowrap;
   margin-right: 0.5rem;
+  max-width: calc(100% - 80px);
 }
 
 .menu-item-with-submenu .mat-mdc-list-item-icon {
