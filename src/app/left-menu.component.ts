@@ -22,6 +22,15 @@ import { filter } from 'rxjs/operators';
   template: `
     <mat-sidenav-container class="sidenav-container">
       <mat-sidenav #drawer mode="side" [(opened)]="opened" class="sidenav">
+        <div class="sidenav-header">
+          <div class="brand-section">
+            <img src="/logo.png" alt="ChatAgent Pro" class="sidenav-logo">
+            <div class="brand-text">
+              <h3 class="brand-title">ChatAgent Pro</h3>
+              <p class="brand-subtitle">AI Agent Platform</p>
+            </div>
+          </div>
+        </div>
         <mat-nav-list>
           <a mat-list-item 
              routerLink="/dashboard" 

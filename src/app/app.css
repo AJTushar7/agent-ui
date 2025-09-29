@@ -1,7 +1,7 @@
 .app-header {
   background: var(--background);
   border-bottom: 1px solid var(--border);
-  padding: 0 2rem;
+  padding: 0 1.5rem;
   height: 70px;
   display: flex;
   align-items: center;
@@ -10,6 +10,7 @@
   z-index: 1000;
   backdrop-filter: blur(8px);
   background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: var(--shadow-sm);
 }
 
 .header-content {
@@ -17,8 +18,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  /* Remove max-width constraint to reduce excessive centering gap */
 }
 
 .logo-section {
@@ -45,11 +45,19 @@
 
 .logout-btn {
   color: var(--text-secondary) !important;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
+  background: var(--background-alt);
+  border-radius: var(--border-radius-lg);
+  padding: 0.5rem;
+  border: 1px solid var(--border);
 }
 
 .logout-btn:hover {
-  color: var(--text-primary) !important;
+  color: var(--primary-color) !important;
+  background: var(--background);
+  border-color: var(--primary-color);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .main-content {
