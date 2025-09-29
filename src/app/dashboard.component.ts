@@ -236,13 +236,14 @@ export class DashboardComponent implements OnInit {
       distinctUntilChanged(),
       startWith(''),
       map((searchTerm: string | null) => {
-        if (!searchTerm || searchTerm.trim() === '') {
+        const term = searchTerm?.trim() || '';
+        if (!term) {
           return this.chatbots;
         }
-        const term = searchTerm.toLowerCase().trim();
+        const searchLower = term.toLowerCase();
         return this.chatbots.filter(bot => 
-          bot.chatbot_id.toLowerCase().includes(term) ||
-          bot.description.toLowerCase().includes(term)
+          bot.chatbot_id.toLowerCase().includes(searchLower) ||
+          bot.description.toLowerCase().includes(searchLower)
         );
       })
     );
@@ -528,10 +529,15 @@ export class ChatbotDeleteDialog {
   imports: [MatDialogModule, MatIconModule, MatButtonModule, CommonModule, FormsModule, HttpClientModule],
   template: `
     <div class="details-dialog">
-      <h2 mat-dialog-title>
-        <mat-icon class="avatar">add</mat-icon>
-        Create New Chatbot
-      </h2>
+      <div class="dialog-header">
+        <h2 mat-dialog-title>
+          <mat-icon class="avatar">add</mat-icon>
+          Create New Chatbot
+        </h2>
+        <button mat-icon-button mat-dialog-close class="close-button">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
       <mat-dialog-content>
         <form #createForm="ngForm">
           <div class="form-group">
@@ -544,7 +550,7 @@ export class ChatbotDeleteDialog {
           </div>
           <div class="form-group">
             <label>Prompt Template</label>
-            <textarea class="form-control" [(ngModel)]="prompt_template" name="prompt_template" required  ></textarea>
+            <textarea class="form-control prompt-template" [(ngModel)]="prompt_template" name="prompt_template" required rows="8"></textarea>
           </div>
           <div class="form-group">
             <label>Vector DB Path</label>
