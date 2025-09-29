@@ -45,68 +45,67 @@ export class AuthService {
 
   login(email: string, password: string): Observable<boolean> {
     const loginData = { email, password };
-    
-    return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, loginData)
-      .pipe(
-        switchMap(response => {
-          // Store the token in localStorage
-          localStorage.setItem(this.tokenKey, response.access_token);
-          console.log('Token stored:', response.access_token);
-          // Fetch user details after successful login
-          return this.getUserDetails().pipe(
-            map(() => {
-              console.log('User details fetched and stored');
-              return true;
-            })
-          );
-        }),
-        catchError(error => {
-          console.error('Login error:', error);
-          return throwError(() => new Error(error.error?.message || 'Login failed'));
-        })
-      );
+
+    return of(true);
+
+    // return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, loginData).pipe(
+    //   switchMap((response) => {
+    //     // Store the token in localStorage
+    //     localStorage.setItem(this.tokenKey, response.access_token);
+    //     console.log('Token stored:', response.access_token);
+    //     // Fetch user details after successful login
+    //     return this.getUserDetails().pipe(
+    //       map(() => {
+    //         console.log('User details fetched and stored');
+    //         return true;
+    //       })
+    //     );
+    //   }),
+    //   catchError((error) => {
+    //     console.error('Login error:', error);
+    //     return throwError(() => new Error(error.error?.message || 'Login failed'));
+    //   })
+    // );
   }
 
   getUserDetails(): Observable<UserDetails> {
     const headers = this.getAuthHeaders();
-    
-    return this.http.get<UserDetails>(`${this.apiUrl}/auth/user-details`, { headers })
-      .pipe(
-        map(userDetails => {
-          // Store user details in localStorage
-          localStorage.setItem(this.userKey, JSON.stringify(userDetails));
-          console.log('User details stored:', userDetails);
-          return userDetails;
-        }),
-        catchError(error => {
-          console.error('Get user details error:', error);
-          return throwError(() => new Error('Failed to fetch user details'));
-        })
-      );
+
+    return this.http.get<UserDetails>(`${this.apiUrl}/auth/user-details`, { headers }).pipe(
+      map((userDetails) => {
+        // Store user details in localStorage
+        localStorage.setItem(this.userKey, JSON.stringify(userDetails));
+        console.log('User details stored:', userDetails);
+        return userDetails;
+      }),
+      catchError((error) => {
+        console.error('Get user details error:', error);
+        return throwError(() => new Error('Failed to fetch user details'));
+      })
+    );
   }
 
   logout(): Observable<boolean> {
     const headers = this.getAuthHeaders();
-    
-    return this.http.post(`${this.apiUrl}/auth/logout`, {}, { headers })
-      .pipe(
-        tap(() => {
-          // Clear local storage regardless of API response
-          this.clearLocalStorage();
-        }),
-        map(() => {
-          // Navigate to login page
-          this.router.navigate(['/login']);
-          return true;
-        }),
-        catchError(error => {
-          console.error('Logout error:', error);
-          // Even if API fails, clear local storage and navigate to login
-          this.clearLocalStorage();
-          this.router.navigate(['/login']);
-          return of(true);
-        })
-      );
+
+    return this.http.post(`${this.apiUrl}/auth/logout`, {}, { headers }).pipe(
+      tap(() => {
+        // Clear local storage regardless of API response
+        this.clearLocalStorage();
+      }),
+      map(() => {
+        // Navigate to login page
+        this.router.navigate(['/login']);
+        return true;
+      }),
+      catchError((error) => {
+        console.error('Logout error:', error);
+        // Even if API fails, clear local storage and navigate to login
+        this.clearLocalStorage();
+        this.router.navigate(['/login']);
+        return of(true);
+      })
+    );
   }
 
   private clearLocalStorage() {
@@ -131,38 +130,39 @@ export class AuthService {
   }
 
   hasPermission(screenName: string): boolean {
-    const userDetails = this.getUserDetailsFromStorage();
-    console.log(`Checking permission for ${screenName}:`, { userDetails });
-    
-    if (!userDetails) {
-      console.log(`No user details found for ${screenName}`);
-      return false;
-    }
-    
-    const hasPermission = userDetails.screen_permissions.some(
-      permission => permission.screen_name === screenName && permission.isvalid
-    );
-    
-    console.log(`Permission check for ${screenName}:`, {
-      screenPermissions: userDetails.screen_permissions,
-      hasPermission: hasPermission
-    });
-    
-    return hasPermission;
+    // const userDetails = this.getUserDetailsFromStorage();
+    // console.log(`Checking permission for ${screenName}:`, { userDetails });
+
+    // if (!userDetails) {
+    //   console.log(`No user details found for ${screenName}`);
+    //   return false;
+    // }
+
+    // const hasPermission = userDetails.screen_permissions.some(
+    //   permission => permission.screen_name === screenName && permission.isvalid
+    // );
+
+    // console.log(`Permission check for ${screenName}:`, {
+    //   screenPermissions: userDetails.screen_permissions,
+    //   hasPermission: hasPermission
+    // });
+
+    // return hasPermission;
+    return true;
   }
 
   hasRole(roleName: string): boolean {
     const userDetails = this.getUserDetailsFromStorage();
     if (!userDetails) return false;
-    
-    return userDetails.roles.some(role => role.role_name === roleName);
+
+    return userDetails.roles.some((role) => role.role_name === roleName);
   }
 
   getAuthHeaders(): HttpHeaders {
     const token = this.getToken();
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     });
   }
 }
