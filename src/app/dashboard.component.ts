@@ -15,7 +15,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, BehaviorSubject } from 'rxjs';
 
 interface Chatbot {
   chatbot_id: string;
@@ -217,6 +217,7 @@ export class DashboardComponent implements OnInit {
   
   // Search functionality
   searchControl = new FormControl('');
+  private chatbots$ = new BehaviorSubject<Chatbot[]>([]);
   filteredChatbots$: Observable<Chatbot[]>;
   
   // Carousel navigation
@@ -231,17 +232,21 @@ export class DashboardComponent implements OnInit {
     private authService: AuthService
   ) {
     // Initialize filtered chatbots observable with search functionality
-    this.filteredChatbots$ = this.searchControl.valueChanges.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      startWith(''),
-      map((searchTerm: string | null) => {
+    this.filteredChatbots$ = combineLatest([
+      this.chatbots$,
+      this.searchControl.valueChanges.pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        startWith('')
+      )
+    ]).pipe(
+      map(([chatbots, searchTerm]) => {
         const term = searchTerm?.trim() || '';
         if (!term) {
-          return this.chatbots;
+          return chatbots;
         }
         const searchLower = term.toLowerCase();
-        return this.chatbots.filter(bot => 
+        return chatbots.filter(bot => 
           bot.chatbot_id.toLowerCase().includes(searchLower) ||
           bot.description.toLowerCase().includes(searchLower)
         );
@@ -266,6 +271,7 @@ export class DashboardComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.chatbots = res.chatbots;
+          this.chatbots$.next(res.chatbots);
           this.total = res.total;
           this.page = res.page;
           this.loading = false;
@@ -275,6 +281,7 @@ export class DashboardComponent implements OnInit {
           console.log('API failed, using mock data for demo purposes');
           // Use mock data when API fails
           this.chatbots = MOCK_API_RESPONSE.chatbots;
+          this.chatbots$.next(MOCK_API_RESPONSE.chatbots);
           this.total = MOCK_API_RESPONSE.total;
           this.page = MOCK_API_RESPONSE.page;
           this.loading = false;
