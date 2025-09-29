@@ -49,14 +49,33 @@ interface ReportRow {
       </mat-dialog-actions>
     `,
     styles: [`
+      h2 {
+        padding: 1.25rem 1.5rem;
+        margin: 0;
+        background: white;
+        border-bottom: 1px solid var(--border-light);
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+      mat-dialog-content {
+        padding: 1.5rem;
+        background: var(--background);
+      }
       pre {
         background: #f5f5f5;
         padding: 12px;
-        border-radius: 6px;
+        border-radius: 8px;
         white-space: pre-wrap;
         word-wrap: break-word;
         max-height: 400px;
         overflow-y: auto;
+        margin: 0;
+      }
+      mat-dialog-actions {
+        padding: 1rem 1.5rem;
+        background: white;
+        border-top: 1px solid var(--border-light);
       }
     `]
 })

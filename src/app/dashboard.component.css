@@ -439,22 +439,12 @@ mat-paginator {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem;
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-  color: white;
+  padding: 1.25rem 1.5rem;
+  background: white;
+  color: var(--text-primary);
   border-radius: 12px 12px 0 0;
-  min-height: 50px;
-}
-
-.dialog-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 1.5rem;
-  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
-  color: white;
-  border-radius: 12px 12px 0 0;
-  min-height: 40px;
+  border-bottom: 1px solid var(--border-light);
+  min-height: 60px;
 }
 
 .header-content {
@@ -464,15 +454,18 @@ mat-paginator {
 }
 
 .header-content h2 {
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   font-weight: 600;
-  color: white;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .header-content mat-icon {
-  font-size: 1.25rem;
-  color: white;
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  background: var(--primary-hover);
+  border-radius: 8px;
+  padding: 0.25rem;
 }
 
 .header-actions {
@@ -482,16 +475,17 @@ mat-paginator {
 }
 
 .close-button {
-  color: white;
-  width: 28px;
-  height: 28px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
+  color: var(--text-secondary);
+  width: 32px;
+  height: 32px;
+  background: var(--background-alt);
+  border-radius: 8px;
   transition: var(--transition-fast);
 }
 
 .close-button:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--error-color);
+  color: white;
 }
 
 .dialog-content {
@@ -499,19 +493,6 @@ mat-paginator {
   background: var(--background);
   max-height: calc(90vh - 160px);
   overflow-y: auto;
-}
-
-.close-button {
-  color: white;
-  width: 32px;
-  height: 32px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  transition: var(--transition-fast);
-}
-
-.close-button:hover {
-  background: rgba(255, 255, 255, 0.1);
 }
 .details-dialog .avatar {
   background: #1976d2;
@@ -561,9 +542,9 @@ mat-paginator {
 }
 .details-dialog mat-dialog-actions {
   padding: 1rem 1.5rem;
-  background: #f5f6fa;
-  border-radius: 0 0 16px 16px;
-  border-top: 1px solid #e1e8ed;
+  background: white;
+  border-radius: 0 0 12px 12px;
+  border-top: 1px solid var(--border-light);
 }
 .details-dialog button[mat-button],
 .details-dialog button[mat-raised-button] {
@@ -614,22 +595,17 @@ mat-paginator {
   overflow: hidden;
 }
 .delete-dialog .dialog-header {
-  background: linear-gradient(135deg, #e74c3c, #c0392b);
-  min-height: 40px;
+  background: white;
+  border-bottom: 1px solid var(--border-light);
+  min-height: 60px;
 }
 
 .delete-dialog .header-content mat-icon {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
+  background: #fee;
+  color: var(--error-color);
+  border-radius: 8px;
   padding: 0.25rem;
-  font-size: 1.25rem;
-}
-.delete-dialog mat-icon {
-  background: #fff;
-  border-radius: 50%;
-  padding: 0.3rem;
   font-size: 1.5rem;
-  margin-right: 0.5rem;
 }
 .delete-dialog mat-dialog-content {
   padding: 1.5rem;
@@ -640,9 +616,9 @@ mat-paginator {
 }
 .delete-dialog mat-dialog-actions {
   padding: 1rem 1.5rem;
-  background: var(--background-alt);
+  background: white;
   border-radius: 0 0 12px 12px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--border-light);
 }
 .delete-dialog button[mat-button],
 .delete-dialog button[mat-raised-button] {

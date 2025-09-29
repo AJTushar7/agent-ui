@@ -21,7 +21,7 @@ import { filter } from 'rxjs/operators';
   ],
   template: `
     <mat-sidenav-container class="sidenav-container">
-      <mat-sidenav #drawer mode="side" [(opened)]="opened" class="sidenav">
+      <mat-sidenav #drawer mode="side" opened="true" [class.collapsed]="!opened" class="sidenav">
         <mat-nav-list>
           <a mat-list-item 
              routerLink="/dashboard" 

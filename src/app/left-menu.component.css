@@ -24,7 +24,7 @@
   transition: width 0.3s ease, min-width 0.3s ease, max-width 0.3s ease;
 }
 
-.sidenav.mat-drawer-closed {
+.sidenav.collapsed {
   width: 70px;
   min-width: 70px;
   max-width: 70px;
@@ -44,19 +44,19 @@
 }
 
 /* Show only icons when collapsed */
-.sidenav.mat-drawer-closed .mat-mdc-list-item {
+.sidenav.collapsed .mat-mdc-list-item {
   padding: 0.75rem;
   margin: 0.375rem 0.5rem;
   justify-content: center;
 }
 
-.sidenav.mat-drawer-closed .mat-mdc-list-item .mat-mdc-list-item-icon {
+.sidenav.collapsed .mat-mdc-list-item .mat-mdc-list-item-icon {
   margin-right: 0;
 }
 
-.sidenav.mat-drawer-closed [matListItemTitle],
-.sidenav.mat-drawer-closed .menu-toggle-icon,
-.sidenav.mat-drawer-closed .submenu-list {
+.sidenav.collapsed [matListItemTitle],
+.sidenav.collapsed .menu-toggle-icon,
+.sidenav.collapsed .submenu-list {
   display: none;
 }
 /* Sidebar Header Styles */
@@ -160,24 +160,39 @@ mat-nav-list {
   align-items: center;
   cursor: pointer;
   width: 100%;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .menu-item-with-submenu [matListItemTitle] {
   flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: visible;
   white-space: nowrap;
   margin-right: 0.5rem;
-  max-width: calc(100% - 80px);
 }
 
 .menu-item-with-submenu .mat-mdc-list-item-icon {
   margin-right: 16px;
 }
 
+.menu-item-with-submenu.active {
+  font-weight: 600;
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 16px rgba(25, 118, 210, 0.25);
+  transform: translateX(6px);
+  width: calc(100% - 2rem - 6px);
+}
+
+.menu-item-with-submenu.active .mat-mdc-list-item-icon,
+.menu-item-with-submenu.active .menu-toggle-icon {
+  color: white;
+}
+
 .menu-toggle-icon {
   transition: transform 0.2s ease-in-out;
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 .submenu-list {

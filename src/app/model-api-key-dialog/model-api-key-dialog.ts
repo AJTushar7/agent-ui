@@ -74,24 +74,39 @@ import { MatSelectModule } from '@angular/material/select';
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 1.5rem;
-      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-      color: white;
+      padding: 1.25rem 1.5rem;
+      background: white;
+      color: var(--text-primary);
       border-radius: 12px 12px 0 0;
-      min-height: 50px;
+      border-bottom: 1px solid var(--border-light);
+      min-height: 60px;
     }
     .dialog-header h2 {
       margin: 0;
       font-size: 1.25rem;
       font-weight: 600;
-      color: white;
+      color: var(--text-primary);
     }
     .close-button {
-      color: white;
+      color: var(--text-secondary);
       width: 32px;
       height: 32px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
+      background: var(--background-alt);
+      border-radius: 8px;
+      transition: var(--transition-fast);
+    }
+    .close-button:hover {
+      background: var(--error-color);
+      color: white;
+    }
+    mat-dialog-content {
+      padding: 1.5rem;
+      background: var(--background);
+    }
+    mat-dialog-actions {
+      padding: 1rem 1.5rem;
+      background: white;
+      border-top: 1px solid var(--border-light);
     }
   `]
 })
