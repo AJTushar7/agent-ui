@@ -1,4 +1,80 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global Styles for AI Chat Agent Platform */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+:root {
+  /* Primary Colors */
+  --primary-color: #4F46E5;
+  --primary-light: #818CF8;
+  --primary-dark: #3730A3;
+  
+  /* Accent Colors */
+  --accent-color: #10B981;
+  --accent-light: #6EE7B7;
+  
+  /* Neutral Colors */
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --text-muted: #9CA3AF;
+  --background: #FFFFFF;
+  --background-alt: #F9FAFB;
+  --border: #E5E7EB;
+  --border-light: #F3F4F6;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  
+  /* Border Radius */
+  --border-radius-sm: 0.375rem;
+  --border-radius-md: 0.5rem;
+  --border-radius-lg: 0.75rem;
+  --border-radius-xl: 1rem;
+}
+
+html, body { 
+  height: 100%; 
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--background-alt);
+  color: var(--text-primary);
+  line-height: 1.5;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-alt);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Button Animations */
+.btn-hover {
+  transition: all 0.2s ease-in-out;
+  transform: translateY(0);
+}
+
+.btn-hover:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}

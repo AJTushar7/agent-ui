@@ -1,8 +1,10 @@
-<header class="app-header">
+<header class="app-header" *ngIf="!isLoginPage">
   <div class="header-content">
-    <h1>Ichat Agent</h1>
+    <div class="logo-section">
+      <img src="/logo.png" alt="Logo" class="header-logo">
+      <h1>ChatAgent Pro</h1>
+    </div>
     <button 
-      *ngIf="!isLoginPage" 
       mat-icon-button 
       (click)="logout()" 
       class="logout-btn"

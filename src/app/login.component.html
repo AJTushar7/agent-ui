@@ -1,28 +1,125 @@
-<mat-card>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="on">
-    <h2>Login</h2>
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Email</mat-label>
-      <input matInput formControlName="email" type="email" name="username" autocomplete="username" />
-      <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
-        Email is required
-      </mat-error>
-      <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
-        Enter a valid email
-      </mat-error>
-    </mat-form-field>
+<div class="login-container">
+  <!-- Left Panel - Login Form -->
+  <div class="login-panel">
+    <div class="login-form-container">
+      <div class="brand-section">
+        <img src="/logo.png" alt="ChatAgent Pro" class="login-logo">
+        <h1 class="brand-title">ChatAgent Pro</h1>
+        <p class="brand-subtitle">Sign in to your AI agent dashboard</p>
+      </div>
 
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Password</mat-label>
-      <input matInput formControlName="password" type="password" name="password" autocomplete="current-password" />
-      <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
-        Password is required
-      </mat-error>
-    </mat-form-field>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form" autocomplete="on">
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <div class="input-container">
+            <mat-icon class="input-icon">email</mat-icon>
+            <input 
+              matInput 
+              formControlName="email" 
+              type="email" 
+              name="username" 
+              autocomplete="username"
+              placeholder="Enter your email"
+              class="form-input"
+            />
+          </div>
+          <div class="error-message" *ngIf="loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched">
+            Email is required
+          </div>
+          <div class="error-message" *ngIf="loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched">
+            Enter a valid email address
+          </div>
+        </div>
 
-    <button mat-raised-button color="primary" type="submit" [disabled]="loading">
-      Login
-    </button>
-    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-  </form>
-</mat-card>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="input-container">
+            <mat-icon class="input-icon">lock</mat-icon>
+            <input 
+              matInput 
+              formControlName="password" 
+              type="password" 
+              name="password" 
+              autocomplete="current-password"
+              placeholder="Enter your password"
+              class="form-input"
+            />
+          </div>
+          <div class="error-message" *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
+            Password is required
+          </div>
+        </div>
+
+        <button 
+          type="submit" 
+          [disabled]="loading || loginForm.invalid" 
+          class="login-button btn-hover">
+          <span *ngIf="!loading">Sign In</span>
+          <span *ngIf="loading" class="loading-text">
+            <mat-icon class="spin">hourglass_empty</mat-icon>
+            Signing in...
+          </span>
+        </button>
+
+        <div *ngIf="errorMessage" class="error-alert">
+          <mat-icon>error_outline</mat-icon>
+          {{ errorMessage }}
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Right Panel - Feature Showcase -->
+  <div class="feature-panel">
+    <div class="feature-content">
+      <h2 class="feature-title">Effortlessly manage your AI chat agents and customer interactions.</h2>
+      <p class="feature-subtitle">Access your intelligent dashboard to monitor, train, and optimize your chatbots for better customer engagement.</p>
+      
+      <div class="feature-dashboard">
+        <div class="dashboard-card main-card">
+          <div class="card-header">
+            <span class="card-title">Active Agents</span>
+            <span class="card-status online">Live</span>
+          </div>
+          <div class="metric-value">12 Running</div>
+          <div class="metric-change positive">↗ +18% this month</div>
+        </div>
+        
+        <div class="dashboard-card">
+          <div class="card-header">
+            <span class="card-title">Response Time</span>
+          </div>
+          <div class="metric-value">0.8s</div>
+          <div class="metric-chart"></div>
+        </div>
+        
+        <div class="dashboard-card">
+          <div class="card-header">
+            <span class="card-title">Conversations</span>
+          </div>
+          <div class="metric-value">2,847</div>
+          <div class="conversation-list">
+            <div class="conversation-item">Customer Support • 2m ago</div>
+            <div class="conversation-item">Sales Inquiry • 5m ago</div>
+            <div class="conversation-item">Technical Help • 8m ago</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="feature-highlights">
+        <div class="highlight-item">
+          <mat-icon>smart_toy</mat-icon>
+          <span>AI-Powered Responses</span>
+        </div>
+        <div class="highlight-item">
+          <mat-icon>analytics</mat-icon>
+          <span>Real-time Analytics</span>
+        </div>
+        <div class="highlight-item">
+          <mat-icon>support_agent</mat-icon>
+          <span>24/7 Customer Support</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
