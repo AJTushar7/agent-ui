@@ -74,16 +74,16 @@ import { MatSelectModule } from '@angular/material/select';
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.25rem 1.5rem;
+      padding: 1rem 1.5rem;
       background: white;
       color: var(--text-primary);
       border-radius: 12px 12px 0 0;
       border-bottom: 1px solid var(--border-light);
-      min-height: 60px;
+      min-height: 48px;
     }
     .dialog-header h2 {
       margin: 0;
-      font-size: 1.25rem;
+      font-size: 1.125rem;
       font-weight: 600;
       color: var(--text-primary);
     }
@@ -94,6 +94,15 @@ import { MatSelectModule } from '@angular/material/select';
       background: var(--background-alt);
       border-radius: 8px;
       transition: var(--transition-fast);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .close-button mat-icon {
+      font-size: 1.25rem;
+      width: 1.25rem;
+      height: 1.25rem;
     }
     .close-button:hover {
       background: var(--error-color);

@@ -50,13 +50,16 @@ interface ReportRow {
     `,
     styles: [`
       h2 {
-        padding: 1.25rem 1.5rem;
+        padding: 1rem 1.5rem;
         margin: 0;
         background: white;
         border-bottom: 1px solid var(--border-light);
-        font-size: 1.25rem;
+        font-size: 1.125rem;
         font-weight: 600;
         color: var(--text-primary);
+        min-height: 48px;
+        display: flex;
+        align-items: center;
       }
       mat-dialog-content {
         padding: 1.5rem;
