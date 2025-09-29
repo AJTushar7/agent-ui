@@ -21,6 +21,18 @@
   gap: 1rem;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .menu-toggle-btn {
   color: var(--text-secondary) !important;
   transition: all 0.2s ease;
@@ -43,12 +55,15 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  margin-left: 0.5rem;
 }
 
 .header-logo {
   height: 40px;
   width: 40px;
   object-fit: contain;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
 }
 
 .header-content h1 {
@@ -59,6 +74,7 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  letter-spacing: 0.025em;
 }
 
 /* User Menu Styles */

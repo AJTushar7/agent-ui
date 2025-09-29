@@ -70,9 +70,6 @@ import { filter } from 'rxjs/operators';
         </mat-nav-list>
       </mat-sidenav>
       <mat-sidenav-content>
-        <button mat-icon-button (click)="opened = !opened" class="toggle-btn">
-          <mat-icon>{{ opened ? 'chevron_left' : 'menu' }}</mat-icon>
-        </button>
         <ng-content></ng-content>
       </mat-sidenav-content>
     </mat-sidenav-container>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
@@ -6,12 +6,16 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AuthService } from './auth.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
 
 interface Chatbot {
   chatbot_id: string;
@@ -82,7 +86,8 @@ const MOCK_API_RESPONSE: ChatbotApiResponse = {
   standalone: true,
   imports: [
     CommonModule, HttpClientModule, MatCardModule, MatPaginatorModule,
-    MatIconModule, MatButtonModule, MatDialogModule, FormsModule, MatSelectModule, MatSlideToggleModule
+    MatIconModule, MatButtonModule, MatDialogModule, FormsModule, ReactiveFormsModule, MatSelectModule, MatSlideToggleModule,
+    MatInputModule, MatFormFieldModule
   ],
   template: `
     <div *ngIf="!hasDashboardPermission" class="no-permission">
@@ -99,6 +104,15 @@ const MOCK_API_RESPONSE: ChatbotApiResponse = {
             <mat-icon>info</mat-icon>
             <span>Demo Mode: Showing sample chatbots</span>
           </div>
+          <div class="search-container">
+            <mat-form-field appearance="outline" class="search-field">
+              <mat-label>Search chatbots</mat-label>
+              <input matInput 
+                     [formControl]="searchControl" 
+                     placeholder="Search by ID or description">
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+          </div>
         </div>
         <button mat-raised-button color="primary" (click)="openCreate()">
           <mat-icon>add</mat-icon> Create New Chatbot
@@ -111,7 +125,22 @@ const MOCK_API_RESPONSE: ChatbotApiResponse = {
       
       <div *ngIf="error" class="error">{{ error }}</div>
       
-      <!-- Empty State -->
+      <!-- Empty State for Search Results -->
+      <ng-template #noResults>
+        <div *ngIf="!loading && !error && chatbots.length > 0 && searchControl.value" class="empty-state">
+          <mat-card class="empty-state-card">
+            <mat-card-content>
+              <div class="empty-state-content">
+                <mat-icon class="empty-state-icon">search_off</mat-icon>
+                <h2>No Results Found</h2>
+                <p>No chatbots match your search criteria. Try adjusting your search terms.</p>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </ng-template>
+      
+      <!-- Empty State - No Chatbots -->
       <div *ngIf="!loading && !error && chatbots.length === 0" class="empty-state">
         <mat-card class="empty-state-card">
           <mat-card-content>
@@ -128,36 +157,44 @@ const MOCK_API_RESPONSE: ChatbotApiResponse = {
         </mat-card>
       </div>
       
-      <!-- Cards Grid -->
-      <div *ngIf="chatbots.length > 0" class="dashboard-grid">
-        <mat-card *ngFor="let bot of chatbots" class="chatbot-card">
-          <mat-card-header>
-            <div mat-card-avatar class="chatbot-avatar">
-              <mat-icon>smart_toy</mat-icon>
-            </div>
-            <mat-card-title>Chatbot</mat-card-title>
-            <mat-card-subtitle>{{ bot.chatbot_id }}</mat-card-subtitle>
-            <span class="card-actions">
-              <button mat-icon-button (click)="openTryNow(bot)" matTooltip="Try Now">
-                <mat-icon>play_circle</mat-icon>
-              </button>
-              <button mat-icon-button (click)="openDetails(bot)" matTooltip="View & Edit Details">
-                <mat-icon>info</mat-icon>
-              </button>
-              <button mat-icon-button color="warn" (click)="openDelete(bot)" matTooltip="Delete Chatbot">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </span>
-          </mat-card-header>
-          <mat-card-content>
-            <div class="desc">{{ bot.description }}</div>
-          </mat-card-content>
-        </mat-card>
+      <!-- Cards Carousel -->
+      <div *ngIf="(filteredChatbots$ | async) as filteredBots; else noResults" class="carousel-container" [hidden]="filteredBots?.length === 0">
+        <button mat-icon-button class="carousel-nav left" (click)="scrollLeft()" [disabled]="!canScrollLeft">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <div class="dashboard-carousel" #carouselContainer>
+          <mat-card *ngFor="let bot of filteredBots" class="chatbot-card">
+            <mat-card-header>
+              <div mat-card-avatar class="chatbot-avatar">
+                <mat-icon>smart_toy</mat-icon>
+              </div>
+              <mat-card-title>Chatbot</mat-card-title>
+              <mat-card-subtitle>{{ bot.chatbot_id }}</mat-card-subtitle>
+              <div class="card-actions">
+                <button mat-icon-button (click)="openTryNow(bot)" matTooltip="Try Now">
+                  <mat-icon>play_circle</mat-icon>
+                </button>
+                <button mat-icon-button (click)="openDetails(bot)" matTooltip="View & Edit Details">
+                  <mat-icon>info</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="openDelete(bot)" matTooltip="Delete Chatbot">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="desc">{{ bot.description }}</div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <button mat-icon-button class="carousel-nav right" (click)="scrollRight()" [disabled]="!canScrollRight">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
       </div>
       
-      <!-- Pagination - only show when there are chatbots -->
+      <!-- Pagination - only show when there are chatbots and no search -->
       <mat-paginator
-        *ngIf="chatbots.length > 0 && total > perPage"
+        *ngIf="chatbots.length > 0 && total > perPage && !searchControl.value"
         [length]="total"
         [pageSize]="perPage"
         [pageIndex]="page - 1"
@@ -177,12 +214,39 @@ export class DashboardComponent implements OnInit {
   error = '';
   hasDashboardPermission = false;
   usingMockData = false;
+  
+  // Search functionality
+  searchControl = new FormControl('');
+  filteredChatbots$: Observable<Chatbot[]>;
+  
+  // Carousel navigation
+  canScrollLeft = false;
+  canScrollRight = true;
+  
+  @ViewChild('carouselContainer') carouselContainer!: ElementRef;
 
   constructor(
     private http: HttpClient, 
     private dialog: MatDialog,
     private authService: AuthService
-  ) {}
+  ) {
+    // Initialize filtered chatbots observable with search functionality
+    this.filteredChatbots$ = this.searchControl.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      startWith(''),
+      map((searchTerm: string | null) => {
+        if (!searchTerm || searchTerm.trim() === '') {
+          return this.chatbots;
+        }
+        const term = searchTerm.toLowerCase().trim();
+        return this.chatbots.filter(bot => 
+          bot.chatbot_id.toLowerCase().includes(term) ||
+          bot.description.toLowerCase().includes(term)
+        );
+      })
+    );
+  }
 
   ngOnInit() {
     this.hasDashboardPermission = this.authService.hasPermission('DASHBOARD');
@@ -261,6 +325,37 @@ export class DashboardComponent implements OnInit {
       width: '500px',
       disableClose: true
     });
+  }
+  
+  // Carousel navigation methods
+  scrollLeft() {
+    if (this.carouselContainer) {
+      const cardWidth = 380; // Card width + gap
+      this.carouselContainer.nativeElement.scrollBy({
+        left: -cardWidth * 3,
+        behavior: 'smooth'
+      });
+      this.updateScrollButtons();
+    }
+  }
+  
+  scrollRight() {
+    if (this.carouselContainer) {
+      const cardWidth = 380; // Card width + gap
+      this.carouselContainer.nativeElement.scrollBy({
+        left: cardWidth * 3,
+        behavior: 'smooth'
+      });
+      this.updateScrollButtons();
+    }
+  }
+  
+  private updateScrollButtons() {
+    if (this.carouselContainer) {
+      const container = this.carouselContainer.nativeElement;
+      this.canScrollLeft = container.scrollLeft > 0;
+      this.canScrollRight = container.scrollLeft < (container.scrollWidth - container.clientWidth);
+    }
   }
 }
 

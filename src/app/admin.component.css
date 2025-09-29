@@ -1,10 +1,11 @@
 .admin-container {
   padding: 36px 20px;
-  max-width: 1250px;
+  width: 100%;
   min-height: 95vh;
-  margin: 0 auto;
+  margin: 0;
   background: linear-gradient(135deg, #f9fbfd, #f3f6fb);
   font-family: "Inter", sans-serif;
+  box-sizing: border-box;
 }
 
 /* Header */

@@ -18,7 +18,8 @@
   border-top-right-radius: 12px;
   border-bottom-right-radius: 12px;
   border-right: 1px solid var(--border);
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   padding-top: 0;
   transition: width 0.3s ease;
 }
@@ -27,6 +28,8 @@
   width: 70px;
   min-width: 70px;
   max-width: 70px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 /* Sidebar Header Styles */
 .sidenav-header {
@@ -125,6 +128,7 @@ mat-nav-list {
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  width: 100%;
 }
 
 .menu-item-with-submenu .mat-mdc-list-item-icon {
@@ -136,12 +140,15 @@ mat-nav-list {
 }
 
 .submenu-list {
-  padding-left: 1.5rem;
+  padding-left: 0;
+  margin-left: 0;
 }
 
 .submenu-list .mat-mdc-list-item {
-  font-size: 1rem;
-  padding-left: 2rem;
+  font-size: 0.9rem;
+  padding-left: 1rem;
+  margin: 0.25rem 1rem;
+  border-radius: 8px;
 }
 
 .submenu-list .mat-mdc-list-item .mat-mdc-list-item-icon {
@@ -156,24 +163,7 @@ mat-nav-list {
   display: inline-block;
 }
 
-.toggle-btn {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  z-index: 1001;
-  background: var(--background);
-  border-radius: 50%;
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--border);
-  transition: all 0.2s ease;
-}
-
-.toggle-btn:hover {
-  background: var(--primary-color);
-  border-color: var(--primary-color);
-  color: var(--background);
-  transform: scale(1.05);
-}
+/* Removed external toggle button styles */
 
 mat-sidenav-content {
   min-height: 100%;

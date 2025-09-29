@@ -1,18 +1,21 @@
 .train-model-container {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
   min-height: 60vh;
-  padding: 2rem 0;
+  padding: 2rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 .train-card {
-  min-width: 340px;
-  max-width: 480px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 800px;
+  margin: 0;
   border-radius: 16px;
   box-shadow: 0 4px 24px rgba(25, 118, 210, 0.13), 0 1.5px 6px rgba(44, 62, 80, 0.08);
   padding: 2rem 2.5rem;
   background: #fffde7;
+  box-sizing: border-box;
 }
 .train-card mat-card-title {
   font-size: 1.2rem;

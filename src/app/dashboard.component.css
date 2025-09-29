@@ -1,38 +1,133 @@
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 1fr;
-  gap: 2.5rem;
+/* Carousel Container */
+.carousel-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   margin: 2rem 0;
-  max-height: calc(3 * 420px + 2 * 2.5rem); /* 3 rows, card height + gaps */
-  overflow: visible;
+  position: relative;
 }
 
-@media (max-width: 1200px) {
-  .dashboard-grid {
-    grid-template-columns: repeat(2, 1fr);
-    max-height: calc(3 * 420px + 2 * 2.5rem);
-  }
+.dashboard-carousel {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  overflow-y: visible;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  padding: 0.5rem;
+  flex: 1;
+  /* Hide scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+
+.dashboard-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.dashboard-carousel .chatbot-card {
+  flex: 0 0 350px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* Carousel Navigation Buttons */
+.carousel-nav {
+  flex-shrink: 0;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition-normal);
+  color: var(--text-secondary);
+}
+
+.carousel-nav:hover:not(:disabled) {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+  transform: scale(1.1);
+  box-shadow: var(--shadow-lg);
+}
+
+.carousel-nav:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.carousel-nav.left {
+  order: -1;
+}
+
+.carousel-nav.right {
+  order: 1;
+}
+
 @media (max-width: 800px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-    max-height: none;
+  .carousel-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .dashboard-carousel {
+    width: 100%;
+  }
+  
+  .carousel-nav {
+    position: static;
+    width: 40px;
+    height: 40px;
   }
 }
 
 .dashboard-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 1.5rem;
   padding: 0 1rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
 }
 
 .header-left {
   flex: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Search Container */
+.search-container {
+  min-width: 300px;
+  flex-shrink: 0;
+}
+
+.search-field {
+  width: 100%;
+}
+
+.search-field .mat-mdc-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .search-container {
+    min-width: 100%;
+    order: 2;
+  }
 }
 
 .mock-data-indicator {
@@ -105,12 +200,15 @@ mat-card-header {
 }
 .card-actions {
   position: absolute;
-  right: var(--spacing-md);
-  top: var(--spacing-md);
+  right: 1rem;
+  top: 1rem;
   display: flex;
-  gap: var(--spacing-xs);
+  gap: 0.5rem;
   opacity: 0;
   transition: var(--transition-normal);
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
 }
 
 .chatbot-card:hover .card-actions {
@@ -160,11 +258,18 @@ mat-card-content {
   letter-spacing: 0.025em;
 }
 .loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: var(--spacing-2xl) 0;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
   color: var(--primary-color);
   font-size: var(--font-size-lg);
   gap: var(--spacing-md);
