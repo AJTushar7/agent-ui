@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
@@ -205,7 +205,7 @@ const MOCK_API_RESPONSE: ChatbotApiResponse = {
   `,
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
   chatbots: Chatbot[] = [];
   total = 0;
   page = 1;
@@ -258,6 +258,18 @@ export class DashboardComponent implements OnInit {
     this.hasDashboardPermission = this.authService.hasPermission('DASHBOARD');
     if (this.hasDashboardPermission) {
       this.fetchChatbots(this.page);
+    }
+  }
+  
+  ngAfterViewInit() {
+    // Initialize scroll buttons after view is ready
+    if (this.carouselContainer) {
+      setTimeout(() => this.updateScrollButtons(), 100);
+      
+      // Add scroll event listener
+      this.carouselContainer.nativeElement.addEventListener('scroll', () => {
+        this.updateScrollButtons();
+      });
     }
   }
 
@@ -343,7 +355,8 @@ export class DashboardComponent implements OnInit {
         left: -cardWidth * 3,
         behavior: 'smooth'
       });
-      this.updateScrollButtons();
+      // Update buttons after animation
+      setTimeout(() => this.updateScrollButtons(), 350);
     }
   }
   
@@ -354,7 +367,8 @@ export class DashboardComponent implements OnInit {
         left: cardWidth * 3,
         behavior: 'smooth'
       });
-      this.updateScrollButtons();
+      // Update buttons after animation
+      setTimeout(() => this.updateScrollButtons(), 350);
     }
   }
   
@@ -362,7 +376,15 @@ export class DashboardComponent implements OnInit {
     if (this.carouselContainer) {
       const container = this.carouselContainer.nativeElement;
       this.canScrollLeft = container.scrollLeft > 0;
-      this.canScrollRight = container.scrollLeft < (container.scrollWidth - container.clientWidth);
+      // Fix for proper right scroll detection
+      const maxScrollLeft = container.scrollWidth - container.clientWidth;
+      this.canScrollRight = container.scrollLeft < maxScrollLeft - 1; // Allow 1px tolerance
+      
+      // Trigger update after animation completes
+      setTimeout(() => {
+        this.canScrollLeft = container.scrollLeft > 0;
+        this.canScrollRight = container.scrollLeft < maxScrollLeft - 1;
+      }, 350);
     }
   }
 }

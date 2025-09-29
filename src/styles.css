@@ -90,22 +90,31 @@ html, body {
   box-sizing: border-box;
 }
 
-/* Scrollbar Styles */
+/* Scrollbar Styles - Centered */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 12px;
 }
 
 ::-webkit-scrollbar-track {
   background: var(--background-alt);
+  border-radius: 6px;
+  margin: 2px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 4px;
+  background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+  border-radius: 6px;
+  border: 2px solid var(--background-alt);
+  min-height: 20px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+}
+
+/* Center scrollbar */
+body {
+  scrollbar-gutter: stable both-edges;
 }
 
 /* Global Cursor Styles */

@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatSelectModule } from '@angular/material/select';
 
@@ -19,11 +20,17 @@ import { MatSelectModule } from '@angular/material/select';
     MatInputModule,
     MatButtonModule,
     MatDialogModule,
+    MatIconModule,
     MatSelectModule,
   ],
 
   template: `
-    <h2 mat-dialog-title>Add New API Key</h2>
+    <div class="dialog-header">
+      <h2 mat-dialog-title>Add New API Key</h2>
+      <button mat-icon-button mat-dialog-close class="close-button">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
     <form [formGroup]="form" (ngSubmit)="submitForm()">
       <mat-dialog-content>
         <mat-form-field appearance="fill" class="full-width">
@@ -63,6 +70,29 @@ import { MatSelectModule } from '@angular/material/select';
   `,
   styles: [`
     .full-width { width: 100%; }
+    .dialog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+      color: white;
+      border-radius: 12px 12px 0 0;
+      min-height: 50px;
+    }
+    .dialog-header h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: white;
+    }
+    .close-button {
+      color: white;
+      width: 32px;
+      height: 32px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+    }
   `]
 })
 

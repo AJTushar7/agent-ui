@@ -6,9 +6,9 @@
   background: #f5f6fa;
 }
 .sidenav {
-  width: 240px;
-  min-width: 240px;
-  max-width: 240px;
+  width: 260px;
+  min-width: 260px;
+  max-width: 260px;
   background: linear-gradient(180deg, var(--background) 0%, var(--background-alt) 100%);
   color: var(--text-primary);
   box-shadow: var(--shadow-lg);
@@ -21,7 +21,7 @@
   overflow-x: hidden;
   overflow-y: auto;
   padding-top: 0;
-  transition: width 0.3s ease;
+  transition: width 0.3s ease, min-width 0.3s ease, max-width 0.3s ease;
 }
 
 .sidenav.mat-drawer-closed {
@@ -30,6 +30,17 @@
   max-width: 70px;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+/* Ensure no horizontal scrollbar in sidebar */
+.sidenav * {
+  overflow-x: hidden;
+}
+
+.sidenav .mat-mdc-list-item {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Show only icons when collapsed */
@@ -96,7 +107,7 @@ mat-nav-list {
   margin: 0.375rem 1rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 0.95rem;
-  padding: 1rem 1.25rem;
+  padding: 1rem 1rem;
   font-weight: 500;
   letter-spacing: 0.025rem;
   border: 1px solid transparent;
@@ -106,6 +117,7 @@ mat-nav-list {
   min-height: 48px;
   display: flex;
   align-items: center;
+  width: calc(100% - 2rem);
 }
 
 .mat-mdc-list-item .mat-mdc-list-item-icon {
@@ -146,6 +158,15 @@ mat-nav-list {
   align-items: center;
   cursor: pointer;
   width: 100%;
+  overflow: hidden;
+}
+
+.menu-item-with-submenu [matListItemTitle] {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 0.5rem;
 }
 
 .menu-item-with-submenu .mat-mdc-list-item-icon {
@@ -191,6 +212,7 @@ mat-sidenav-content {
   flex-direction: column;
   width: 100%;
   overflow-x: auto;
+  flex: 1;
 }
 
 @media (max-width: 800px) {

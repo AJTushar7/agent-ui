@@ -6,16 +6,23 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-create-user-dialog',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatButtonModule, MatDialogModule],
+  imports: [CommonModule, FormsModule, MatButtonModule, MatDialogModule, MatIconModule],
   template: `
     <div class="create-user-dialog">
-      <h2 mat-dialog-title>Create User</h2>
-      <form #f="ngForm">
+      <div class="dialog-header">
+        <h2 mat-dialog-title>Create User</h2>
+        <button mat-icon-button mat-dialog-close class="close-button">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <div class="dialog-content">
+        <form #f="ngForm">
         <div class="form-group">
           <label>Email</label>
           <input class="form-control" type="email" [(ngModel)]="email" name="email" required />
@@ -24,9 +31,10 @@ import { CommonModule } from '@angular/common';
           <label>Password</label>
           <input class="form-control" type="password" [(ngModel)]="password" name="password" required />
         </div>
-      </form>
-      <div *ngIf="error" class="error">{{ error }}</div>
-      <div *ngIf="success" class="success">{{ success }}</div>
+        </form>
+        <div *ngIf="error" class="error">{{ error }}</div>
+        <div *ngIf="success" class="success">{{ success }}</div>
+      </div>
       <mat-dialog-actions align="end">
         <button mat-button (click)="onCancel()" [disabled]="loading">Cancel</button>
         <button mat-raised-button color="primary" (click)="createUser()" [disabled]="loading || !email || !password">
