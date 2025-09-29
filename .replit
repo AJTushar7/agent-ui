@@ -47,5 +47,5 @@ externalPort = 3002
 
 [deployment]
 deploymentTarget = "autoscale"
-run = ["npx", "serve", "dist/agent-ui", "-s"]
+run = ["npx", "serve", "-s", "dist/agent-ui", "-l"]
 build = ["npm", "run", "build"]
