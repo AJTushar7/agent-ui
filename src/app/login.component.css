@@ -10,7 +10,7 @@
 
 .login-card {
   width: 100%;
-  max-width: 420px;
+  max-width: 550px;
   background: var(--background);
   border-radius: var(--border-radius-xl);
   padding: 2.5rem;
@@ -147,14 +147,18 @@
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Error Styles */
 .error-message {
   font-size: 0.875rem;
-  color: #EF4444;
+  color: #ef4444;
   font-weight: 500;
 }
 
@@ -166,7 +170,7 @@
   background: rgba(239, 68, 68, 0.1);
   border: 1px solid rgba(239, 68, 68, 0.2);
   border-radius: var(--border-radius-md);
-  color: #DC2626;
+  color: #dc2626;
   font-size: 0.875rem;
   font-weight: 500;
 }
@@ -176,11 +180,11 @@
   .login-container {
     padding: 1rem;
   }
-  
+
   .login-card {
     padding: 2rem;
   }
-  
+
   .brand-title {
     font-size: 1.5rem;
   }
