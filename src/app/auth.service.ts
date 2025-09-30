@@ -46,26 +46,24 @@ export class AuthService {
   login(email: string, password: string): Observable<boolean> {
     const loginData = { email, password };
 
-    return of(true);
-
-    // return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, loginData).pipe(
-    //   switchMap((response) => {
-    //     // Store the token in localStorage
-    //     localStorage.setItem(this.tokenKey, response.access_token);
-    //     console.log('Token stored:', response.access_token);
-    //     // Fetch user details after successful login
-    //     return this.getUserDetails().pipe(
-    //       map(() => {
-    //         console.log('User details fetched and stored');
-    //         return true;
-    //       })
-    //     );
-    //   }),
-    //   catchError((error) => {
-    //     console.error('Login error:', error);
-    //     return throwError(() => new Error(error.error?.message || 'Login failed'));
-    //   })
-    // );
+    return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, loginData).pipe(
+      switchMap((response) => {
+        // Store the token in localStorage
+        localStorage.setItem(this.tokenKey, response.access_token);
+        console.log('Token stored:', response.access_token);
+        // Fetch user details after successful login
+        return this.getUserDetails().pipe(
+          map(() => {
+            console.log('User details fetched and stored');
+            return true;
+          })
+        );
+      }),
+      catchError((error) => {
+        console.error('Login error:', error);
+        return throwError(() => new Error(error.error?.message || 'Login failed'));
+      })
+    );
   }
 
   getUserDetails(): Observable<UserDetails> {
@@ -130,25 +128,24 @@ export class AuthService {
   }
 
   hasPermission(screenName: string): boolean {
-    // const userDetails = this.getUserDetailsFromStorage();
-    // console.log(`Checking permission for ${screenName}:`, { userDetails });
+    const userDetails = this.getUserDetailsFromStorage();
+    console.log(`Checking permission for ${screenName}:`, { userDetails });
 
-    // if (!userDetails) {
-    //   console.log(`No user details found for ${screenName}`);
-    //   return false;
-    // }
+    if (!userDetails) {
+      console.log(`No user details found for ${screenName}`);
+      return false;
+    }
 
-    // const hasPermission = userDetails.screen_permissions.some(
-    //   permission => permission.screen_name === screenName && permission.isvalid
-    // );
+    const hasPermission = userDetails.screen_permissions.some(
+      (permission) => permission.screen_name === screenName && permission.isvalid
+    );
 
-    // console.log(`Permission check for ${screenName}:`, {
-    //   screenPermissions: userDetails.screen_permissions,
-    //   hasPermission: hasPermission
-    // });
+    console.log(`Permission check for ${screenName}:`, {
+      screenPermissions: userDetails.screen_permissions,
+      hasPermission: hasPermission,
+    });
 
-    // return hasPermission;
-    return true;
+    return hasPermission;
   }
 
   hasRole(roleName: string): boolean {

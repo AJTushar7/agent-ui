@@ -5,7 +5,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogModule,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
@@ -46,48 +51,23 @@ interface LLMUserModelDetailList {
   user_model_details: UserModelDetailList[];
 }
 
-// Mock Data
-const MOCK_CHATBOTS: Chatbot[] = [
-  {
-    chatbot_id: 'cb_001',
-    description: 'Customer Support Assistant - Handles customer inquiries, provides product information, and resolves common issues efficiently.'
-  },
-  {
-    chatbot_id: 'cb_002', 
-    description: 'Sales Consultant Bot - Assists with lead qualification, product recommendations, and guides users through the sales process.'
-  },
-  {
-    chatbot_id: 'cb_003',
-    description: 'Technical Documentation Assistant - Helps developers find relevant documentation, API references, and troubleshooting guides.'
-  },
-  {
-    chatbot_id: 'cb_004',
-    description: 'HR Onboarding Bot - Guides new employees through onboarding process, company policies, and initial setup tasks.'
-  },
-  {
-    chatbot_id: 'cb_005',
-    description: 'E-commerce Shopping Assistant - Provides product recommendations, answers questions about orders, and helps with returns.'
-  },
-  {
-    chatbot_id: 'cb_006',
-    description: 'Educational Tutor Bot - Offers personalized learning assistance, explains complex concepts, and provides practice exercises.'
-  }
-];
-
-const MOCK_API_RESPONSE: ChatbotApiResponse = {
-  total: MOCK_CHATBOTS.length,
-  page: 1,
-  per_page: 9,
-  chatbots: MOCK_CHATBOTS
-};
-
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    CommonModule, HttpClientModule, MatCardModule, MatPaginatorModule,
-    MatIconModule, MatButtonModule, MatDialogModule, FormsModule, ReactiveFormsModule, MatSelectModule, MatSlideToggleModule,
-    MatInputModule, MatFormFieldModule
+    CommonModule,
+    HttpClientModule,
+    MatCardModule,
+    MatPaginatorModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDialogModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatInputModule,
+    MatFormFieldModule,
   ],
   template: `
     <div *ngIf="!hasDashboardPermission" class="no-permission">
@@ -96,7 +76,7 @@ const MOCK_API_RESPONSE: ChatbotApiResponse = {
         <p>You don't have permission to access the Dashboard.</p>
       </mat-card>
     </div>
-    
+
     <div *ngIf="hasDashboardPermission">
       <div class="dashboard-header">
         <div class="header-left">
@@ -107,9 +87,11 @@ const MOCK_API_RESPONSE: ChatbotApiResponse = {
           <div class="search-container">
             <mat-form-field appearance="outline" class="search-field">
               <mat-label>Search chatbots</mat-label>
-              <input matInput 
-                     [formControl]="searchControl" 
-                     placeholder="Search by ID or description">
+              <input
+                matInput
+                [formControl]="searchControl"
+                placeholder="Search by ID or description"
+              />
               <mat-icon matSuffix>search</mat-icon>
             </mat-form-field>
           </div>
@@ -122,12 +104,15 @@ const MOCK_API_RESPONSE: ChatbotApiResponse = {
         <mat-icon>sync</mat-icon>
         <span>Loading chatbots...</span>
       </div>
-      
+
       <div *ngIf="error" class="error">{{ error }}</div>
-      
+
       <!-- Empty State for Search Results -->
       <ng-template #noResults>
-        <div *ngIf="!loading && !error && chatbots.length > 0 && searchControl.value" class="empty-state">
+        <div
+          *ngIf="!loading && !error && chatbots.length > 0 && searchControl.value"
+          class="empty-state"
+        >
           <mat-card class="empty-state-card">
             <mat-card-content>
               <div class="empty-state-content">
@@ -139,7 +124,7 @@ const MOCK_API_RESPONSE: ChatbotApiResponse = {
           </mat-card>
         </div>
       </ng-template>
-      
+
       <!-- Empty State - No Chatbots -->
       <div *ngIf="!loading && !error && chatbots.length === 0" class="empty-state">
         <mat-card class="empty-state-card">
@@ -147,8 +132,16 @@ const MOCK_API_RESPONSE: ChatbotApiResponse = {
             <div class="empty-state-content">
               <mat-icon class="empty-state-icon">smart_toy</mat-icon>
               <h2>No Chatbots Found</h2>
-              <p>Get started by creating your first AI chatbot. Build intelligent conversational agents tailored to your specific needs.</p>
-              <button mat-raised-button color="primary" (click)="openCreate()" class="empty-state-button">
+              <p>
+                Get started by creating your first AI chatbot. Build intelligent conversational
+                agents tailored to your specific needs.
+              </p>
+              <button
+                mat-raised-button
+                color="primary"
+                (click)="openCreate()"
+                class="empty-state-button"
+              >
                 <mat-icon>add</mat-icon>
                 Create Your First Chatbot
               </button>
@@ -156,10 +149,19 @@ const MOCK_API_RESPONSE: ChatbotApiResponse = {
           </mat-card-content>
         </mat-card>
       </div>
-      
+
       <!-- Cards Carousel -->
-      <div *ngIf="(filteredChatbots$ | async) as filteredBots; else noResults" class="carousel-container" [hidden]="filteredBots?.length === 0">
-        <button mat-icon-button class="carousel-nav left" (click)="scrollLeft()" [disabled]="!canScrollLeft">
+      <div
+        *ngIf="filteredChatbots$ | async as filteredBots; else noResults"
+        class="carousel-container"
+        [hidden]="filteredBots?.length === 0"
+      >
+        <button
+          mat-icon-button
+          class="carousel-nav left"
+          (click)="scrollLeft()"
+          [disabled]="!canScrollLeft"
+        >
           <mat-icon>chevron_left</mat-icon>
         </button>
         <div class="dashboard-carousel" #carouselContainer>
@@ -177,7 +179,12 @@ const MOCK_API_RESPONSE: ChatbotApiResponse = {
                 <button mat-icon-button (click)="openDetails(bot)" matTooltip="View & Edit Details">
                   <mat-icon>info</mat-icon>
                 </button>
-                <button mat-icon-button color="warn" (click)="openDelete(bot)" matTooltip="Delete Chatbot">
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="openDelete(bot)"
+                  matTooltip="Delete Chatbot"
+                >
                   <mat-icon>delete</mat-icon>
                 </button>
               </div>
@@ -187,11 +194,16 @@ const MOCK_API_RESPONSE: ChatbotApiResponse = {
             </mat-card-content>
           </mat-card>
         </div>
-        <button mat-icon-button class="carousel-nav right" (click)="scrollRight()" [disabled]="!canScrollRight">
+        <button
+          mat-icon-button
+          class="carousel-nav right"
+          (click)="scrollRight()"
+          [disabled]="!canScrollRight"
+        >
           <mat-icon>chevron_right</mat-icon>
         </button>
       </div>
-      
+
       <!-- Pagination - only show when there are chatbots and no search -->
       <mat-paginator
         *ngIf="chatbots.length > 0 && total > perPage && !searchControl.value"
@@ -199,11 +211,12 @@ const MOCK_API_RESPONSE: ChatbotApiResponse = {
         [pageSize]="perPage"
         [pageIndex]="page - 1"
         [pageSizeOptions]="[9]"
-        (page)="onPageChange($event)">
+        (page)="onPageChange($event)"
+      >
       </mat-paginator>
     </div>
   `,
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
   chatbots: Chatbot[] = [];
@@ -214,20 +227,20 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   error = '';
   hasDashboardPermission = false;
   usingMockData = false;
-  
+
   // Search functionality
   searchControl = new FormControl('');
   private chatbots$ = new BehaviorSubject<Chatbot[]>([]);
   filteredChatbots$: Observable<Chatbot[]>;
-  
+
   // Carousel navigation
   canScrollLeft = false;
   canScrollRight = true;
-  
+
   @ViewChild('carouselContainer') carouselContainer!: ElementRef;
 
   constructor(
-    private http: HttpClient, 
+    private http: HttpClient,
     private dialog: MatDialog,
     private authService: AuthService
   ) {
@@ -238,7 +251,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         debounceTime(300),
         distinctUntilChanged(),
         startWith('')
-      )
+      ),
     ]).pipe(
       map(([chatbots, searchTerm]) => {
         const term = searchTerm?.trim() || '';
@@ -246,9 +259,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           return chatbots;
         }
         const searchLower = term.toLowerCase();
-        return chatbots.filter(bot => 
-          bot.chatbot_id.toLowerCase().includes(searchLower) ||
-          bot.description.toLowerCase().includes(searchLower)
+        return chatbots.filter(
+          (bot) =>
+            bot.chatbot_id.toLowerCase().includes(searchLower) ||
+            bot.description.toLowerCase().includes(searchLower)
         );
       })
     );
@@ -260,12 +274,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.fetchChatbots(this.page);
     }
   }
-  
+
   ngAfterViewInit() {
     // Initialize scroll buttons after view is ready
     if (this.carouselContainer) {
       setTimeout(() => this.updateScrollButtons(), 100);
-      
+
       // Add scroll event listener
       this.carouselContainer.nativeElement.addEventListener('scroll', () => {
         this.updateScrollButtons();
@@ -278,8 +292,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.error = '';
     this.usingMockData = false;
     const headers = this.authService.getAuthHeaders();
-    
-    this.http.get<ChatbotApiResponse>(`http://127.0.0.1:8000/chatbot?page=${page}&per_page=${this.perPage}`,{headers})
+
+    this.http
+      .get<ChatbotApiResponse>(
+        `http://127.0.0.1:8000/chatbot?page=${page}&per_page=${this.perPage}`,
+        { headers }
+      )
       .subscribe({
         next: (res) => {
           this.chatbots = res.chatbots;
@@ -292,13 +310,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         error: (err) => {
           console.log('API failed, using mock data for demo purposes');
           // Use mock data when API fails
-          this.chatbots = MOCK_API_RESPONSE.chatbots;
-          this.chatbots$.next(MOCK_API_RESPONSE.chatbots);
-          this.total = MOCK_API_RESPONSE.total;
-          this.page = MOCK_API_RESPONSE.page;
+          this.error = 'Failed to load chatbots.';
           this.loading = false;
-          this.usingMockData = true;
-        }
+        },
       });
   }
 
@@ -310,7 +324,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.dialog.open(ChatbotDetailsDialog, {
       data: { chatbot_id: bot.chatbot_id },
       width: '500px',
-      disableClose: true
+      disableClose: true,
     });
   }
 
@@ -318,9 +332,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(ChatbotDeleteDialog, {
       data: { chatbot_id: bot.chatbot_id },
       width: '400px',
-      disableClose: true
+      disableClose: true,
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result === 'deleted') {
         this.fetchChatbots(this.page);
       }
@@ -330,9 +344,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   openCreate() {
     const dialogRef = this.dialog.open(ChatbotCreateDialog, {
       width: '500px',
-      disableClose: true
+      disableClose: true,
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result === 'created') {
         this.fetchChatbots(this.page);
       }
@@ -343,35 +357,35 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.dialog.open(ChatbotTryNowDialog, {
       data: { chatbot_id: bot.chatbot_id },
       width: '500px',
-      disableClose: true
+      disableClose: true,
     });
   }
-  
+
   // Carousel navigation methods
   scrollLeft() {
     if (this.carouselContainer) {
       const cardWidth = 380; // Card width + gap
       this.carouselContainer.nativeElement.scrollBy({
         left: -cardWidth * 3,
-        behavior: 'smooth'
+        behavior: 'smooth',
       });
       // Update buttons after animation
       setTimeout(() => this.updateScrollButtons(), 350);
     }
   }
-  
+
   scrollRight() {
     if (this.carouselContainer) {
       const cardWidth = 380; // Card width + gap
       this.carouselContainer.nativeElement.scrollBy({
         left: cardWidth * 3,
-        behavior: 'smooth'
+        behavior: 'smooth',
       });
       // Update buttons after animation
       setTimeout(() => this.updateScrollButtons(), 350);
     }
   }
-  
+
   private updateScrollButtons() {
     if (this.carouselContainer) {
       const container = this.carouselContainer.nativeElement;
@@ -379,7 +393,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       // Fix for proper right scroll detection
       const maxScrollLeft = container.scrollWidth - container.clientWidth;
       this.canScrollRight = container.scrollLeft < maxScrollLeft - 1; // Allow 1px tolerance
-      
+
       // Trigger update after animation completes
       setTimeout(() => {
         this.canScrollLeft = container.scrollLeft > 0;
@@ -392,7 +406,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 @Component({
   selector: 'chatbot-details-dialog',
   standalone: true,
-  imports: [MatDialogModule, MatIconModule, MatButtonModule, CommonModule, FormsModule, HttpClientModule],
+  imports: [
+    MatDialogModule,
+    MatIconModule,
+    MatButtonModule,
+    CommonModule,
+    FormsModule,
+    HttpClientModule,
+  ],
   template: `
     <div class="details-dialog">
       <div class="dialog-header">
@@ -401,7 +422,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           <h2 mat-dialog-title>Chatbot Details</h2>
         </div>
         <div class="header-actions">
-          <button mat-mini-fab color="accent" class="train-btn" matTooltip="Train Model (RAG)" (click)="goToTrain()">
+          <button
+            mat-mini-fab
+            color="accent"
+            class="train-btn"
+            matTooltip="Train Model (RAG)"
+            (click)="goToTrain()"
+          >
             TRAIN
           </button>
           <button mat-icon-button mat-dialog-close class="close-button">
@@ -415,19 +442,37 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         <form *ngIf="!loading && !error" #editForm="ngForm">
           <div class="form-group">
             <label>ID</label>
-            <input class="form-control" [(ngModel)]="details.chatbot_id" name="chatbot_id" disabled />
+            <input
+              class="form-control"
+              [(ngModel)]="details.chatbot_id"
+              name="chatbot_id"
+              disabled
+            />
           </div>
           <div class="form-group">
             <label>Description</label>
-            <textarea class="form-control" [(ngModel)]="details.description" name="description"></textarea>
+            <textarea
+              class="form-control"
+              [(ngModel)]="details.description"
+              name="description"
+            ></textarea>
           </div>
           <div class="form-group">
             <label>Prompt Template</label>
-            <textarea class="form-control" [(ngModel)]="details.prompt_template" name="prompt_template"></textarea>
+            <textarea
+              class="form-control"
+              [(ngModel)]="details.prompt_template"
+              name="prompt_template"
+            ></textarea>
           </div>
           <div class="form-group">
             <label>Vector DB Path</label>
-            <input class="form-control" [(ngModel)]="details.vector_db_path" name="vector_db_path" [placeholder]="details.vector_db_name || ''" />
+            <input
+              class="form-control"
+              [(ngModel)]="details.vector_db_path"
+              name="vector_db_path"
+              [placeholder]="details.vector_db_name || ''"
+            />
           </div>
         </form>
         <div *ngIf="saveError" class="error">{{ saveError }}</div>
@@ -435,11 +480,18 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       </div>
       <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close [disabled]="saving">Close</button>
-        <button mat-raised-button color="primary" (click)="save()" [disabled]="loading || error || saving">{{ saving ? 'Saving...' : 'Save' }}</button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="save()"
+          [disabled]="loading || error || saving"
+        >
+          {{ saving ? 'Saving...' : 'Save' }}
+        </button>
       </mat-dialog-actions>
     </div>
   `,
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
 export class ChatbotDetailsDialog implements OnInit {
   details: ChatbotDetails = {
@@ -447,7 +499,7 @@ export class ChatbotDetailsDialog implements OnInit {
     description: '',
     prompt_template: '',
     vector_db_path: '',
-    vector_db_name: ''
+    vector_db_name: '',
   };
   loading = true;
   error = '';
@@ -464,8 +516,9 @@ export class ChatbotDetailsDialog implements OnInit {
   ) {}
 
   ngOnInit() {
-    const headers=this.authService.getAuthHeaders();
-    this.http.get<ChatbotDetails>(`http://127.0.0.1:8000/chatbot/${this.data.chatbot_id}`,{headers})
+    const headers = this.authService.getAuthHeaders();
+    this.http
+      .get<ChatbotDetails>(`http://127.0.0.1:8000/chatbot/${this.data.chatbot_id}`, { headers })
       .subscribe({
         next: (res) => {
           this.details = res;
@@ -477,7 +530,7 @@ export class ChatbotDetailsDialog implements OnInit {
         error: (err) => {
           this.error = 'Failed to load chatbot details.';
           this.loading = false;
-        }
+        },
       });
   }
 
@@ -489,19 +542,18 @@ export class ChatbotDetailsDialog implements OnInit {
       prompt_template: this.details.prompt_template,
       vector_db_path: this.details.vector_db_path,
       vector_db_name: this.details.vector_db_name || this.details.vector_db_path,
-      description: this.details.description
+      description: this.details.description,
     };
-    this.http.put(`http://127.0.0.1:8000/chatbot/${this.details.chatbot_id}`, payload)
-      .subscribe({
-        next: () => {
-          this.saving = false;
-          this.saveSuccess = true;
-        },
-        error: (err) => {
-          this.saving = false;
-          this.saveError = 'Failed to save changes.';
-        }
-      });
+    this.http.put(`http://127.0.0.1:8000/chatbot/${this.details.chatbot_id}`, payload).subscribe({
+      next: () => {
+        this.saving = false;
+        this.saveSuccess = true;
+      },
+      error: (err) => {
+        this.saving = false;
+        this.saveError = 'Failed to save changes.';
+      },
+    });
   }
 
   goToTrain() {
@@ -526,16 +578,21 @@ export class ChatbotDetailsDialog implements OnInit {
         </button>
       </div>
       <div class="dialog-content">
-        <p>Are you sure you want to delete chatbot <strong>{{ data.chatbot_id }}</strong>?</p>
+        <p>
+          Are you sure you want to delete chatbot <strong>{{ data.chatbot_id }}</strong
+          >?
+        </p>
         <div *ngIf="error" class="error">{{ error }}</div>
       </div>
       <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close [disabled]="loading">Cancel</button>
-        <button mat-raised-button color="warn" (click)="deleteChatbot()" [disabled]="loading">{{ loading ? 'Deleting...' : 'Delete' }}</button>
+        <button mat-raised-button color="warn" (click)="deleteChatbot()" [disabled]="loading">
+          {{ loading ? 'Deleting...' : 'Delete' }}
+        </button>
       </mat-dialog-actions>
     </div>
   `,
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
 export class ChatbotDeleteDialog {
   loading = false;
@@ -550,24 +607,30 @@ export class ChatbotDeleteDialog {
   deleteChatbot() {
     this.loading = true;
     this.error = '';
-    this.http.delete(`http://127.0.0.1:8000/chatbot/${this.data.chatbot_id}`)
-      .subscribe({
-        next: () => {
-          this.loading = false;
-          this.dialogRef.close('deleted');
-        },
-        error: (err) => {
-          this.loading = false;
-          this.error = 'Failed to delete chatbot.';
-        }
-      });
+    this.http.delete(`http://127.0.0.1:8000/chatbot/${this.data.chatbot_id}`).subscribe({
+      next: () => {
+        this.loading = false;
+        this.dialogRef.close('deleted');
+      },
+      error: (err) => {
+        this.loading = false;
+        this.error = 'Failed to delete chatbot.';
+      },
+    });
   }
 }
 
 @Component({
   selector: 'chatbot-create-dialog',
   standalone: true,
-  imports: [MatDialogModule, MatIconModule, MatButtonModule, CommonModule, FormsModule, HttpClientModule],
+  imports: [
+    MatDialogModule,
+    MatIconModule,
+    MatButtonModule,
+    CommonModule,
+    FormsModule,
+    HttpClientModule,
+  ],
   template: `
     <div class="details-dialog">
       <div class="dialog-header">
@@ -583,19 +646,42 @@ export class ChatbotDeleteDialog {
         <form #createForm="ngForm">
           <div class="form-group">
             <label>ID</label>
-            <input class="form-control" [(ngModel)]="chatbot_id" name="chatbot_id" required  placeholder="No special character or space allowed"/>
+            <input
+              class="form-control"
+              [(ngModel)]="chatbot_id"
+              name="chatbot_id"
+              required
+              placeholder="No special character or space allowed"
+            />
           </div>
           <div class="form-group">
             <label>Description</label>
-            <textarea class="form-control" [(ngModel)]="description" name="description" required placeholder="Description of the chatbot"></textarea>
+            <textarea
+              class="form-control"
+              [(ngModel)]="description"
+              name="description"
+              required
+              placeholder="Description of the chatbot"
+            ></textarea>
           </div>
           <div class="form-group">
             <label>Prompt Template</label>
-            <textarea class="form-control prompt-template" [(ngModel)]="prompt_template" name="prompt_template" required rows="8"></textarea>
+            <textarea
+              class="form-control prompt-template"
+              [(ngModel)]="prompt_template"
+              name="prompt_template"
+              required
+              rows="8"
+            ></textarea>
           </div>
           <div class="form-group">
             <label>Vector DB Path</label>
-            <input class="form-control" [(ngModel)]="vector_db_path" name="vector_db_path" required />
+            <input
+              class="form-control"
+              [(ngModel)]="vector_db_path"
+              name="vector_db_path"
+              required
+            />
           </div>
         </form>
         <div *ngIf="error" class="error">{{ error }}</div>
@@ -603,13 +689,18 @@ export class ChatbotDeleteDialog {
       </mat-dialog-content>
       <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close [disabled]="loading">Cancel</button>
-        <button mat-raised-button color="primary" (click)="create()" [disabled]="loading || !chatbot_id || !description || !prompt_template || !vector_db_path">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="create()"
+          [disabled]="loading || !chatbot_id || !description || !prompt_template || !vector_db_path"
+        >
           {{ loading ? 'Creating...' : 'Create' }}
         </button>
       </mat-dialog-actions>
     </div>
   `,
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
 export class ChatbotCreateDialog {
   chatbot_id = '';
@@ -651,10 +742,11 @@ Question: {question}
       description: this.description,
       prompt_template: this.prompt_template,
       vector_db_path: this.vector_db_path,
-      vector_db_name: this.vector_db_path
+      vector_db_name: this.vector_db_path,
     };
-    const headers=this.authService.getAuthHeaders();
-    this.http.post<{ message: string }>('http://127.0.0.1:8000/chatbot', payload,{headers})
+    const headers = this.authService.getAuthHeaders();
+    this.http
+      .post<{ message: string }>('http://127.0.0.1:8000/chatbot', payload, { headers })
       .subscribe({
         next: (res) => {
           this.loading = false;
@@ -664,7 +756,7 @@ Question: {question}
         error: (err) => {
           this.loading = false;
           this.error = 'Failed to create chatbot.';
-        }
+        },
       });
   }
 }
@@ -672,7 +764,17 @@ Question: {question}
 @Component({
   selector: 'chatbot-try-now-dialog',
   standalone: true,
-  imports: [MatDialogModule, MatIconModule, MatButtonModule, CommonModule, FormsModule, HttpClientModule, MatSelectModule, MatSlideToggleModule, MatProgressSpinnerModule],
+  imports: [
+    MatDialogModule,
+    MatIconModule,
+    MatButtonModule,
+    CommonModule,
+    FormsModule,
+    HttpClientModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatProgressSpinnerModule,
+  ],
   template: `
     <div class="details-dialog">
       <h2 mat-dialog-title>
@@ -682,8 +784,13 @@ Question: {question}
       <mat-dialog-content>
         <form #tryForm="ngForm">
           <div class="form-group">
-            <label>{{data.chatbot_id}}</label>
-            <mat-select [(ngModel)]="selectedModel" name="selectedModel" required class="form-control">
+            <label>{{ data.chatbot_id }}</label>
+            <mat-select
+              [(ngModel)]="selectedModel"
+              name="selectedModel"
+              required
+              class="form-control"
+            >
               <mat-option *ngFor="let model of availableModels" [value]="model.model_name">
                 {{ model.model_name }}
               </mat-option>
@@ -698,7 +805,13 @@ Question: {question}
           </div>
           <div class="form-group">
             <label>Question</label>
-            <textarea class="form-control" [(ngModel)]="question" name="question" required placeholder="Type your question..."></textarea>
+            <textarea
+              class="form-control"
+              [(ngModel)]="question"
+              name="question"
+              required
+              placeholder="Type your question..."
+            ></textarea>
           </div>
         </form>
         <div *ngIf="loading" class="loading">
@@ -711,16 +824,18 @@ Question: {question}
       </mat-dialog-content>
       <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close [disabled]="loading">Close</button>
-        <button mat-raised-button color="primary"
-                (click)="tryChatbot()"
-                [disabled]="loading || !question || !selectedModel">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="tryChatbot()"
+          [disabled]="loading || !question || !selectedModel"
+        >
           {{ loading ? 'Thinking...' : 'Try Now' }}
         </button>
-
       </mat-dialog-actions>
     </div>
   `,
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
 export class ChatbotTryNowDialog implements OnInit {
   question = '';
@@ -745,18 +860,21 @@ export class ChatbotTryNowDialog implements OnInit {
   }
 
   loadModels() {
-    const headers=this.authservice.getAuthHeaders();
-    this.http.get<LLMUserModelDetailList>('http://localhost:8000/model/user-model-details-list',{headers})
+    const headers = this.authservice.getAuthHeaders();
+    this.http
+      .get<LLMUserModelDetailList>('http://localhost:8000/model/user-model-details-list', {
+        headers,
+      })
       .subscribe({
         next: (res) => {
-          this.availableModels = res.user_model_details.filter(model => model.is_active);
+          this.availableModels = res.user_model_details.filter((model) => model.is_active);
           if (this.availableModels.length > 0) {
             this.selectedModel = this.availableModels[0].model_name;
           }
         },
         error: (err) => {
           this.error = 'Failed to load available models.';
-        }
+        },
       });
   }
 
@@ -765,16 +883,17 @@ export class ChatbotTryNowDialog implements OnInit {
     this.error = '';
     this.answer = '';
     this.startThinkingAnimation();
-  
+
     const payload = {
       chatbot_id: this.data.chatbot_id,
       question: this.question,
       llm_model: this.selectedModel,
-      use_vector_db: this.enableRAG
+      use_vector_db: this.enableRAG,
     };
     const headers = this.authservice.getAuthHeaders();
-  
-    this.http.post<{ answer: string }>('http://localhost:8000/chat', payload, { headers })
+
+    this.http
+      .post<{ answer: string }>('http://localhost:8000/chat', payload, { headers })
       .subscribe({
         next: (res) => {
           this.loading = false;
@@ -785,10 +904,9 @@ export class ChatbotTryNowDialog implements OnInit {
           this.loading = false;
           this.stopThinkingAnimation();
           this.error = 'Failed to get answer.';
-        }
+        },
       });
   }
-  
 
   typeWriterEffect(fullText: string) {
     this.answer = '';
@@ -809,11 +927,9 @@ export class ChatbotTryNowDialog implements OnInit {
       this.thinkingText = '🤖 Thinking' + '.'.repeat(dots);
     }, 500);
   }
-  
+
   stopThinkingAnimation() {
     clearInterval(this.thinkingInterval);
     this.thinkingText = '🤖 Thinking';
   }
-  
-  
 }

@@ -63,7 +63,6 @@ export class LoginComponent {
       },
       error: (err) => {
         this.loading = false;
-        this.router.navigate(['/dashboard']);
         console.error('Login error:', err);
         this.errorMessage = err.message || 'Login failed.';
       },
